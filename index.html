@@ -1,10 +1,31 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>palasync-website</title>
+    <link rel="icon" type="image/svg+xml" href="/Submark icon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <title>PalaSync — Premium Web Design &amp; Development Agency India</title>
+    <meta name="description" content="PalaSync builds premium custom websites, SaaS products, and brand identities for Indian and global businesses. Starting from ₹9,999." />
+    
+    <!-- PWA / Mobile Capable tags -->
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="theme-color" content="#6B3FFF" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <link rel="apple-touch-icon" href="/Submark icon.svg" />
+
+    <!-- ⚡ No-FOUC: Apply theme BEFORE React loads — prevents white flash -->
+    <script>
+      (function() {
+        try {
+          var stored = localStorage.getItem('palasync-theme');
+          var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+          if (stored === 'dark' || (!stored && prefersDark)) {
+            document.documentElement.classList.add('dark');
+          }
+        } catch(e) {}
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>
