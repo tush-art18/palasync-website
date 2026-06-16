@@ -144,8 +144,8 @@ export default function Pricing() {
           {/* Header */}
           <div style={{ textAlign: 'center', marginBottom: 56, maxWidth: 650, margin: '0 auto 56px' }}>
             {/* Spot Urgency banner */}
-            <div style={{ display: 'inline-flex', justifyContent: 'center', marginBottom: 20 }}>
-              <div style={{
+            <div className="urgency-banner-container" style={{ display: 'flex', justifyContent: 'center', marginBottom: 20 }}>
+              <div className="urgency-banner" style={{
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: 8,
@@ -185,30 +185,28 @@ export default function Pricing() {
           </div>
 
           {/* Pricing Grid */}
-          <div style={{
+          <div className="pricing-grid" style={{
             display: 'grid',
             gridTemplateColumns: '1fr',
             gap: 32,
             marginBottom: 96,
             alignItems: 'stretch',
-          }} className="pricing-grid">
+          }}>
             {PLANS.map((plan) => (
               <div
                 key={plan.name}
+                className={`pricing-card ${plan.popular ? 'popular' : ''}`}
                 style={{
                   position: 'relative',
                   background: plan.popular ? 'var(--surface)' : 'var(--surface-2)',
                   border: plan.popular ? '2px solid var(--violet)' : '1px solid var(--border)',
                   borderRadius: 24,
-                  padding: plan.popular ? '44px 32px' : '36px 30px',
                   display: 'flex',
                   flexDirection: 'column',
                   gap: 24,
                   boxShadow: plan.popular ? '0 16px 48px -12px rgba(107, 63, 255, 0.16)' : 'none',
-                  transform: plan.popular ? 'scale(1.02)' : 'none',
                   transition: 'all 200ms ease',
                 }}
-                className={`pricing-card ${plan.popular ? 'popular' : ''}`}
               >
                 {/* Popular Badge */}
                 <span style={{
@@ -228,12 +226,12 @@ export default function Pricing() {
                 </span>
 
                 <div>
-                  <h3 style={{ fontSize: '1.4rem', color: 'var(--text)', marginBottom: 8 }}>{plan.name}</h3>
+                  <h3 className="pricing-card-title" style={{ fontSize: '1.4rem', color: 'var(--text)', marginBottom: 8 }}>{plan.name}</h3>
                   <p style={{ fontSize: '0.85rem', color: 'var(--muted)', lineHeight: 1.5, minHeight: 45 }}>{plan.desc}</p>
                 </div>
 
                 <div style={{ display: 'flex', alignItems: 'baseline', gap: 6 }}>
-                  <span style={{
+                  <span className="pricing-card-price" style={{
                     fontSize: '2.5rem',
                     fontWeight: 800,
                     fontFamily: 'Syne, sans-serif',
@@ -304,9 +302,9 @@ export default function Pricing() {
                   >
                     <button
                       onClick={() => setOpenFaq(isOpened ? null : index)}
+                      className="faq-btn"
                       style={{
                         width: '100%',
-                        padding: '20px 28px',
                         background: 'transparent',
                         border: 'none',
                         textAlign: 'left',
@@ -337,8 +335,7 @@ export default function Pricing() {
                           exit={{ height: 0, opacity: 0 }}
                           transition={{ duration: 0.22, ease: 'easeOut' }}
                         >
-                          <div style={{
-                            padding: '0 28px 20px 28px',
+                          <div className="faq-content" style={{
                             fontSize: '0.875rem',
                             color: 'var(--muted)',
                             lineHeight: 1.65,
@@ -358,12 +355,78 @@ export default function Pricing() {
       </main>
 
       <style>{`
+        .pricing-card {
+          padding: 36px 30px;
+        }
+        .pricing-card.popular {
+          padding: 44px 32px;
+          transform: scale(1.01);
+        }
+        .faq-btn {
+          padding: 20px 28px;
+        }
+        .faq-content {
+          padding: 0 28px 20px 28px;
+        }
+        
+        @media (min-width: 600px) and (max-width: 899px) {
+          .pricing-grid {
+            grid-template-columns: repeat(2, 1fr) !important;
+          }
+          .pricing-card:last-child {
+            grid-column: span 2;
+          }
+        }
+        
+        @media (max-width: 900px) {
+          .pricing-card.popular {
+            transform: none !important;
+            padding: 36px 30px;
+          }
+        }
+        
+        @media (max-width: 600px) {
+          .faq-btn {
+            padding: 16px 20px !important;
+            font-size: 0.9rem !important;
+          }
+          .faq-content {
+            padding: 0 20px 16px 20px !important;
+          }
+        }
+        
+        @media (max-width: 480px) {
+          .pricing-card {
+            padding: 24px 20px !important;
+            border-radius: 20px !important;
+          }
+          .pricing-card.popular {
+            padding: 28px 20px !important;
+          }
+          .pricing-card-title {
+            font-size: 1.2rem !important;
+          }
+          .pricing-card-price {
+            font-size: 2rem !important;
+          }
+          .urgency-banner {
+            font-size: 11px !important;
+            padding: 6px 12px !important;
+            text-align: center;
+            line-height: 1.3;
+          }
+        }
+        
         @media (min-width: 900px) {
           .pricing-grid {
             grid-template-columns: repeat(3, 1fr) !important;
           }
           .pricing-card.popular {
             transform: translateY(-8px) scale(1.03) !important;
+          }
+          .pricing-card:hover {
+            border-color: var(--violet-soft) !important;
+            box-shadow: 0 20px 40px -15px rgba(107, 63, 255, 0.12);
           }
         }
       `}</style>

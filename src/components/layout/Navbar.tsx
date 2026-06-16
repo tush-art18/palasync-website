@@ -58,7 +58,7 @@ export default function Navbar() {
           {/* Logo */}
           <Link to="/" aria-label="PalaSync home" style={{ display: 'flex', alignItems: 'center', flexShrink: 0 }}>
             <img
-              src={theme === 'dark' ? '/main dark logo.svg' : '/main light logo.svg'}
+              src={theme === 'dark' ? '/main dark logo.png' : '/main light logo.png'}
               alt="PalaSync"
               className="nav-logo"
               style={{ width: 'auto', display: 'block' }}

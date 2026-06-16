@@ -209,19 +209,7 @@ export default function Services() {
           </div>
 
           {/* Interactive Navigation Tabs */}
-          <div style={{
-            display: 'flex',
-            justifyContent: 'center',
-            gap: 8,
-            flexWrap: 'wrap',
-            marginBottom: 56,
-            background: 'var(--surface-2)',
-            padding: 6,
-            borderRadius: 99,
-            maxWidth: 620,
-            margin: '0 auto 56px',
-            border: '1px solid var(--border)',
-          }}>
+          <div className="services-tabs">
             {(Object.keys(SERVICES_DATA) as ServiceKey[]).map((key) => {
               const item = SERVICES_DATA[key]
               const isSelected = activeKey === key
@@ -229,26 +217,12 @@ export default function Services() {
                 <button
                   key={key}
                   onClick={() => handleSelectService(key)}
+                  className={`services-tab-btn ${isSelected ? 'active' : ''}`}
                   style={{
-                    padding: '10px 22px',
-                    borderRadius: 99,
-                    fontSize: 13,
-                    fontWeight: 700,
-                    cursor: 'pointer',
-                    background: isSelected ? service.accent : 'transparent',
-                    color: isSelected ? '#ffffff' : 'var(--muted)',
-                    border: 'none',
-                    transition: 'all 220ms ease',
-                    fontFamily: 'Syne, sans-serif',
-                  }}
-                  onMouseEnter={e => {
-                    if (!isSelected) e.currentTarget.style.color = 'var(--text)'
-                  }}
-                  onMouseLeave={e => {
-                    if (!isSelected) e.currentTarget.style.color = 'var(--muted)'
-                  }}
+                    '--accent-color': service.accent,
+                  } as React.CSSProperties}
                 >
-                  <span style={{ marginRight: 6 }}>{item.icon}</span>
+                  <span className="tab-icon">{item.icon}</span>
                   {item.title}
                 </button>
               )
@@ -272,11 +246,10 @@ export default function Services() {
             >
               {/* Left Column - Core Info */}
               <div style={{ display: 'flex', flexDirection: 'column', gap: 28 }}>
-                <div style={{
+                <div className="service-details-card" style={{
                   background: 'var(--surface)',
                   border: '1px solid var(--border)',
                   borderRadius: 24,
-                  padding: '40px clamp(20px, 4vw, 36px)',
                   boxShadow: `0 10px 30px -10px ${service.glow}`,
                   display: 'flex',
                   flexDirection: 'column',
@@ -284,7 +257,7 @@ export default function Services() {
                 }}>
                   <div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 12 }}>
-                      <span style={{
+                      <span className="service-title-icon" style={{
                         fontSize: 28,
                         color: service.accent,
                         background: `${service.accent}12`,
@@ -297,16 +270,13 @@ export default function Services() {
                       }}>
                         {service.icon}
                       </span>
-                      <h2 style={{ fontSize: '1.6rem', color: 'var(--text)' }}>{service.title}</h2>
+                      <h2 className="service-title-text" style={{ fontSize: '1.6rem', color: 'var(--text)' }}>{service.title}</h2>
                     </div>
                     <p style={{ color: 'var(--text-2)', fontSize: '1.05rem', lineHeight: 1.6 }}>{service.subtitle}</p>
                   </div>
 
                   {/* Metadata values */}
-                  <div style={{
-                    display: 'grid',
-                    gridTemplateColumns: '1fr 1fr',
-                    gap: 16,
+                  <div className="service-meta-grid" style={{
                     padding: '20px 0',
                     borderTop: '1px solid var(--border)',
                     borderBottom: '1px solid var(--border)',
@@ -366,11 +336,10 @@ export default function Services() {
               {/* Right Column - Work examples & FAQs */}
               <div style={{ display: 'flex', flexDirection: 'column', gap: 32 }}>
                 {/* Visual Project Examples Section */}
-                <div style={{
+                <div className="showcase-card" style={{
                   background: 'var(--surface-2)',
                   border: '1px solid var(--border)',
                   borderRadius: 24,
-                  padding: 32,
                 }}>
                   <h3 style={{ fontSize: '1.2rem', marginBottom: 20 }}>Example Showcase</h3>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
@@ -431,9 +400,9 @@ export default function Services() {
                         >
                           <button
                             onClick={() => setActiveFaq(isOpened ? null : index)}
+                            className="faq-btn"
                             style={{
                               width: '100%',
-                              padding: '18px 24px',
                               background: 'transparent',
                               border: 'none',
                               textAlign: 'left',
@@ -464,8 +433,7 @@ export default function Services() {
                                 exit={{ height: 0, opacity: 0 }}
                                 transition={{ duration: 0.2 }}
                               >
-                                <div style={{
-                                  padding: '0 24px 20px 24px',
+                                <div className="faq-content" style={{
                                   fontSize: '0.875rem',
                                   color: 'var(--muted)',
                                   lineHeight: 1.6,
@@ -488,6 +456,129 @@ export default function Services() {
 
       {/* Styled Breakpoints */}
       <style>{`
+        .services-tabs {
+          display: flex;
+          justify-content: center;
+          gap: 8px;
+          margin-bottom: 56px;
+          background: var(--surface-2);
+          padding: 6px;
+          border-radius: 99px;
+          max-width: 620px;
+          margin: 0 auto 56px;
+          border: 1px solid var(--border);
+        }
+        .services-tab-btn {
+          padding: 10px 22px;
+          border-radius: 99px;
+          font-size: 13px;
+          font-weight: 700;
+          cursor: pointer;
+          background: transparent;
+          color: var(--muted);
+          border: none;
+          transition: all 220ms ease;
+          font-family: Syne, sans-serif;
+          display: inline-flex;
+          align-items: center;
+        }
+        .services-tab-btn:hover {
+          color: var(--text);
+        }
+        .services-tab-btn.active {
+          background: var(--accent-color);
+          color: #ffffff;
+        }
+        .tab-icon {
+          margin-right: 6px;
+        }
+        .service-details-card {
+          padding: 40px;
+        }
+        .showcase-card {
+          padding: 32px;
+        }
+        .faq-btn {
+          padding: 18px 24px;
+        }
+        .faq-content {
+          padding: 0 24px 20px 24px;
+        }
+        .service-meta-grid {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 16px;
+        }
+
+        @media (max-width: 900px) {
+          .services-tabs {
+            margin-bottom: 40px;
+          }
+        }
+
+        @media (max-width: 768px) {
+          .service-details-card {
+            padding: 32px 24px;
+          }
+          .showcase-card {
+            padding: 24px 20px;
+          }
+          .faq-btn {
+            padding: 16px 20px;
+          }
+          .faq-content {
+            padding: 0 20px 16px 20px;
+          }
+        }
+
+        @media (max-width: 600px) {
+          .services-tabs {
+            border-radius: 16px;
+            padding: 8px;
+            width: 100%;
+            margin-bottom: 32px;
+          }
+          .services-tab-btn {
+            flex: 1 1 calc(50% - 6px);
+            justify-content: center;
+            padding: 8px 12px;
+            font-size: 12px;
+          }
+          .service-meta-grid {
+            grid-template-columns: 1fr;
+            gap: 12px;
+          }
+        }
+
+        @media (max-width: 480px) {
+          .services-tabs {
+            flex-direction: column;
+            gap: 4px;
+            border-radius: 14px;
+          }
+          .services-tab-btn {
+            width: 100%;
+            padding: 10px;
+          }
+          .service-details-card {
+            padding: 24px 16px;
+            border-radius: 18px !important;
+          }
+          .showcase-card {
+            padding: 20px 16px;
+            border-radius: 18px !important;
+          }
+          .service-title-icon {
+            width: 40px !important;
+            height: 40px !important;
+            font-size: 20px !important;
+            border-radius: 10px !important;
+          }
+          .service-title-text {
+            font-size: 1.3rem !important;
+          }
+        }
+
         @media (min-width: 800px) {
           .service-grid {
             grid-template-columns: 1.2fr 1fr !important;

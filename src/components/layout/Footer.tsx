@@ -30,7 +30,7 @@ export default function Footer() {
           <div style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
             <Link to="/" aria-label="PalaSync home">
               <img
-                src={theme === 'dark' ? '/main dark logo.svg' : '/main light logo.svg'}
+                src={theme === 'dark' ? '/main dark logo.png' : '/main light logo.png'}
                 alt="PalaSync"
                 style={{ height: 32, width: 'auto' }}
               />
