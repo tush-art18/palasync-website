@@ -95,7 +95,7 @@ export default function Footer() {
                 src="/color variant.png"
                 alt="PalaSync"
                 style={{
-                  height: 28,
+                  height: 32,
                   width: 'auto',
                   display: 'block',
                   objectFit: 'contain',

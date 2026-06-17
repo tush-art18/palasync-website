@@ -86,7 +86,7 @@ export default function Navbar() {
             {/* ── LOGO ── */}
             <Link to="/" aria-label="PalaSync home" className="nav-logo-link">
               <img
-                src={useDarkNavbar ? '/color variant.png' : '/color.png'}
+                src={useDarkNavbar ? '/main dark logo.png' : '/main light logo.png'}
                 alt="PalaSync"
                 className="nav-logo-img"
               />
@@ -224,7 +224,7 @@ export default function Navbar() {
               >
                 <Link to="/" aria-label="PalaSync home" onClick={() => setOpen(false)}>
                   <img
-                    src={theme === 'dark' ? '/color variant.png' : '/color.png'}
+                    src={theme === 'dark' ? '/main dark logo.png' : '/main light logo.png'}
                     alt="PalaSync"
                     style={{ height: 26, width: 'auto', display: 'block' }}
                   />
