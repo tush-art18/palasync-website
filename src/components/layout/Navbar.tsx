@@ -195,28 +195,33 @@ export default function Navbar() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.25 }}
+              transition={{ duration: 0.3 }}
               onClick={() => setOpen(false)}
               style={{
-                position: 'fixed', inset: 0, zIndex: 198,
-                background: 'rgba(0,0,0,0.55)',
-                backdropFilter: 'blur(8px)',
-                WebkitBackdropFilter: 'blur(8px)',
+                position: 'fixed', inset: 0, zIndex: 201,
+                background: 'rgba(0,0,0,0.5)',
+                backdropFilter: 'blur(12px)',
+                WebkitBackdropFilter: 'blur(12px)',
               }}
             />
 
-            {/* Drawer — slides in from top with spring */}
+            {/* Drawer — full screen circular reveal from hamburger button area */}
             <motion.div
               key="drawer"
               className="nav-drawer"
-              initial={{ opacity: 0, y: -20, scaleY: 0.92, scaleX: 0.97 }}
-              animate={{ opacity: 1, y: 0, scaleY: 1, scaleX: 1 }}
-              exit={{ opacity: 0, y: -16, scaleY: 0.94, scaleX: 0.97 }}
-              transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
-              style={{ transformOrigin: 'top center' }}
+              initial={{ clipPath: 'circle(0% at 90% 4%)' }}
+              animate={{ clipPath: 'circle(150% at 90% 4%)' }}
+              exit={{ clipPath: 'circle(0% at 90% 4%)' }}
+              transition={{ duration: 0.65, ease: [0.76, 0, 0.24, 1] }}
             >
               {/* Drawer header — logo + close */}
-              <div className="drawer-header">
+              <motion.div
+                className="drawer-header"
+                initial={{ opacity: 0, y: -15 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -15 }}
+                transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
+              >
                 <Link to="/" aria-label="PalaSync home" onClick={() => setOpen(false)}>
                   <img
                     src={theme === 'dark' ? '/main dark logo.png' : '/main light logo.png'}
@@ -234,16 +239,21 @@ export default function Navbar() {
                     <line x1="6" y1="6" x2="18" y2="18" />
                   </svg>
                 </button>
-              </div>
+              </motion.div>
 
               {/* Nav items with stagger */}
               <nav className="drawer-nav">
                 {LINKS.map((link, i) => (
                   <motion.div
                     key={link.href}
-                    initial={{ opacity: 0, x: -16 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.06 + i * 0.05, duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+                    initial={{ opacity: 0, y: 35, rotate: 2 }}
+                    animate={{ opacity: 1, y: 0, rotate: 0 }}
+                    exit={{ opacity: 0, y: 20, rotate: 1 }}
+                    transition={{
+                      delay: 0.15 + i * 0.05,
+                      duration: 0.45,
+                      ease: [0.22, 1, 0.36, 1]
+                    }}
                   >
                     <Link
                       to={link.href}
@@ -263,7 +273,13 @@ export default function Navbar() {
               </nav>
 
               {/* Drawer footer */}
-              <div className="drawer-footer">
+              <motion.div
+                className="drawer-footer"
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 20 }}
+                transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1], delay: 0.35 }}
+              >
                 <Link to="/contact" className="btn btn-primary" style={{ width: '100%', justifyContent: 'center', fontSize: 15 }}
                   onClick={() => setOpen(false)}
                 >
@@ -275,7 +291,7 @@ export default function Navbar() {
                     {theme === 'dark' ? <SunIcon /> : <MoonIcon />}
                   </div>
                 </button>
-              </div>
+              </motion.div>
             </motion.div>
           </>
         )}
@@ -459,18 +475,18 @@ export default function Navbar() {
         ══════════════════════════════════════ */
         .nav-drawer {
           position: fixed;
-          top: calc(12px + env(safe-area-inset-top, 0px));
-          left: 12px;
-          right: 12px;
-          z-index: 199;
-          background: var(--surface);
-          border: 1px solid var(--border);
-          border-radius: 22px;
-          overflow: hidden;
-          box-shadow:
-            0 0 0 1px rgba(107,63,255,0.10),
-            0 32px 72px -8px rgba(0,0,0,0.28),
-            0 8px 24px -4px rgba(0,0,0,0.12);
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          z-index: 202;
+          background: var(--bg);
+          overflow-y: auto;
+          display: flex;
+          flex-direction: column;
+          box-shadow: none;
+          border: none;
+          border-radius: 0;
         }
 
         /* Drawer header */
@@ -478,8 +494,9 @@ export default function Navbar() {
           display: flex;
           align-items: center;
           justify-content: space-between;
-          padding: 18px 20px 14px;
+          padding: 16px 20px;
           border-bottom: 1px solid var(--border);
+          flex-shrink: 0;
         }
         .drawer-close {
           width: 32px;
@@ -503,56 +520,64 @@ export default function Navbar() {
 
         /* Drawer nav */
         .drawer-nav {
-          padding: 10px 12px;
+          padding: 32px 24px;
+          display: flex;
+          flex-direction: column;
+          gap: 6px;
+          flex-grow: 1;
+          justify-content: center;
         }
         .drawer-link {
           position: relative;
           display: flex;
           align-items: center;
-          gap: 12px;
-          padding: 13px 12px;
-          border-radius: 12px;
-          font-size: 1rem;
-          font-weight: 600;
+          gap: 16px;
+          padding: 14px 20px;
+          border-radius: 16px;
+          font-size: clamp(1.8rem, 6vw, 2.5rem);
+          font-family: 'Syne', sans-serif;
+          font-weight: 800;
           color: var(--text-2);
           text-decoration: none;
-          transition: color 160ms ease, background 160ms ease;
+          transition: all 220ms ease;
           overflow: hidden;
-          margin-bottom: 2px;
+          letter-spacing: -0.03em;
         }
         .drawer-link:hover {
           color: var(--text);
-          background: rgba(107,63,255,0.04);
+          background: var(--violet-mute);
+          transform: translateX(6px);
         }
         .drawer-link--active {
           color: var(--violet);
-          font-weight: 700;
         }
         .drawer-link-num {
-          font-size: 10px;
-          font-weight: 700;
-          color: var(--muted-2);
-          letter-spacing: 0.06em;
+          font-size: 11px;
+          font-weight: 800;
+          color: var(--violet);
+          letter-spacing: 0.1em;
           flex-shrink: 0;
-          min-width: 20px;
+          min-width: 24px;
+          opacity: 0.7;
+          font-family: 'Inter', sans-serif;
         }
         .drawer-active-pill {
           position: absolute;
           inset: 0;
           background: var(--violet-mute);
-          border-radius: 12px;
+          border-radius: 16px;
           z-index: -1;
         }
 
         /* Drawer footer */
         .drawer-footer {
-          padding: 4px 12px 14px;
+          padding: 24px;
           display: flex;
           flex-direction: column;
-          gap: 10px;
+          gap: 12px;
           border-top: 1px solid var(--border);
-          margin-top: 4px;
-          padding-top: 14px;
+          flex-shrink: 0;
+          background: var(--surface-2);
         }
         .drawer-theme-row {
           display: flex;

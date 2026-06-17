@@ -89,12 +89,11 @@ export default function Home() {
       {/* ════════════════════════════════════════════════════════
           §1  HERO — Full-bleed editorial, bottom-anchored
       ════════════════════════════════════════════════════════ */}
-      <section style={{
+      <section className="hero-section" style={{
         position: 'relative',
         minHeight: '100svh',
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'flex-end',
         overflow: 'hidden',
         /* Uses CSS variable — adapts: dark ink in light mode, elevated surface in dark mode */
         background: 'var(--bg-accent)',
@@ -929,6 +928,16 @@ export default function Home() {
       </section>
 
       <style>{`
+        /* ── Hero section layout ── */
+        .hero-section {
+          justify-content: center;
+        }
+        @media (min-width: 900px) {
+          .hero-section {
+            justify-content: flex-end !important;
+          }
+        }
+
         /* ── Section utility classes ── */
         .section-overline {
           font-size: 11px; font-weight: 700; letter-spacing: 0.18em;
