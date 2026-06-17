@@ -234,7 +234,6 @@ export default function Pricing() {
                   <span className="pricing-card-price" style={{
                     fontSize: '2.5rem',
                     fontWeight: 800,
-                    fontFamily: 'Syne, sans-serif',
                     color: 'var(--text)',
                     lineHeight: 1,
                   }}>

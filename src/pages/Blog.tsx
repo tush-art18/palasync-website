@@ -291,7 +291,6 @@ export default function Blog() {
                   </div>
 
                   <h1 style={{
-                    fontFamily: 'Syne, sans-serif',
                     fontWeight: 800,
                     fontSize: 'clamp(1.8rem, 4.5vw, 2.8rem)',
                     lineHeight: 1.2,
@@ -306,7 +305,7 @@ export default function Blog() {
                       width: 28, height: 28, borderRadius: '50%',
                       background: 'var(--violet)', color: '#fff',
                       display: 'flex', alignItems: 'center', justifyContent: 'center',
-                      fontFamily: 'Syne, sans-serif', fontSize: 11, fontWeight: 700,
+                      fontSize: 11, fontWeight: 700,
                     }}>
                       {post.author[0]}
                     </div>

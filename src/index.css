@@ -7,8 +7,10 @@
   --violet-soft: #8B65FF;
   --violet-mute: rgba(107, 63, 255, 0.08);
   --red:         #E8372A;
+  --acid:        #C8FF00;
+  --ink:         #080810;
 
-  /* Light theme */
+  /* Light theme — standard surfaces */
   --bg:          #FAFAFA;
   --bg-alt:      #F4F3FF;
   --surface:     #FFFFFF;
@@ -20,6 +22,18 @@
   --muted:       #7A7A9A;
   --muted-2:     #A0A0B8;
   --glass:       rgba(255,255,255,0.7);
+
+  /* ─── Adaptive "accent" section variables ─────────────────
+     In light mode → deep ink-dark
+     In dark mode  → elevated surface (so sections still contrast)
+  ─────────────────────────────────────────────────────────── */
+  --bg-accent:       #080810;
+  --text-accent:     #F0F0FF;
+  --muted-accent:    rgba(255, 255, 255, 0.40);
+  --muted2-accent:   rgba(255, 255, 255, 0.22);
+  --border-accent:   rgba(255, 255, 255, 0.08);
+  --label-accent:    rgba(255, 255, 255, 0.42);
+  --subtext-accent:  rgba(255, 255, 255, 0.30);
 }
 
 :root.dark {
@@ -34,6 +48,15 @@
   --muted:       #626688;
   --muted-2:     #44446A;
   --glass:       rgba(255,255,255,0.03);
+
+  /* In dark mode: accent sections become elevated surface — lighter than bg */
+  --bg-accent:       #15152A;
+  --text-accent:     #F0F0FF;
+  --muted-accent:    #626688;
+  --muted2-accent:   #44446A;
+  --border-accent:   #222238;
+  --label-accent:    #8B65FF;
+  --subtext-accent:  #44446A;
 }
 
 /* ─── Reset ──────────────────────────────────────────────────────── */
@@ -46,6 +69,10 @@
 html {
   scroll-behavior: smooth;
   -webkit-text-size-adjust: 100%;
+  /* PWA: prevent pull-to-refresh bounce */
+  overscroll-behavior: none;
+  /* PWA: respect notch/safe areas */
+  height: -webkit-fill-available;
 }
 
 body {
@@ -57,9 +84,15 @@ body {
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
   transition: background 300ms ease, color 300ms ease;
+  /* PWA: prevent horizontal overscroll */
+  overscroll-behavior-x: none;
+  /* Remove tap highlight flash on mobile */
+  -webkit-tap-highlight-color: transparent;
+  /* Smooth feel on iOS */
+  min-height: -webkit-fill-available;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1, h2 {
   font-family: 'Syne', sans-serif;
   font-weight: 800;
   line-height: 1.1;
@@ -67,9 +100,22 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--text);
 }
 
+h3, h4, h5, h6 {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: -0.015em;
+  color: var(--text);
+}
+
 a { text-decoration: none; color: inherit; }
 img, svg { display: block; max-width: 100%; }
-button { font-family: inherit; }
+button {
+  font-family: inherit;
+  /* PWA: instant tap response, no 300ms delay */
+  touch-action: manipulation;
+}
+a { touch-action: manipulation; }
 
 ::selection {
   background: rgba(107, 63, 255, 0.18);
@@ -94,7 +140,7 @@ button { font-family: inherit; }
 .display {
   font-family: 'Syne', sans-serif;
   font-weight: 800;
-  font-size: clamp(2.6rem, 8vw, 5.5rem);
+  font-size: clamp(2.4rem, 7.5vw, 5.5rem);
   line-height: 1.05;
   letter-spacing: -0.03em;
 }
@@ -118,7 +164,7 @@ button { font-family: inherit; }
   align-items: center;
   justify-content: center;
   gap: 8px;
-  font-family: 'Syne', sans-serif;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   font-weight: 700;
   font-size: 15px;
   border-radius: 99px;
@@ -127,7 +173,11 @@ button { font-family: inherit; }
   text-decoration: none;
   border: none;
   white-space: nowrap;
+  /* PWA: no 300ms tap delay */
+  touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
+  /* Minimum tap target 44px */
+  min-height: 44px;
 }
 .btn:focus-visible {
   outline: 2px solid var(--violet);
@@ -179,6 +229,48 @@ button { font-family: inherit; }
   transform: translateY(-1px);
 }
 
+/* Acid — high-contrast CTA for accent/dark sections */
+.btn-acid {
+  padding: 14px 32px;
+  background: var(--acid);
+  color: #080810;
+  font-weight: 800;
+  position: relative;
+  overflow: hidden;
+}
+.btn-acid:hover {
+  background: #d4ff33;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(200, 255, 0, 0.28);
+  color: #080810;
+}
+.btn-acid:active { transform: translateY(0); }
+
+/* Ghost light — for on-dark accent sections */
+.btn-ghost-light {
+  padding: 13px 32px;
+  background: transparent;
+  color: var(--text-accent);
+  border: 1.5px solid var(--border-accent);
+  position: relative;
+  overflow: hidden;
+}
+.btn-ghost-light:hover {
+  border-color: rgba(255,255,255,0.45);
+  color: #fff;
+  transform: translateY(-1px);
+}
+/* Dark mode override: adapts to lighter border */
+:root.dark .btn-ghost-light {
+  color: var(--text-2);
+  border-color: var(--border-2);
+}
+:root.dark .btn-ghost-light:hover {
+  border-color: var(--violet);
+  color: var(--text);
+  background: var(--violet-mute);
+}
+
 /* ─── Label / Tag ────────────────────────────────────────────────── */
 .label {
   display: inline-flex;
@@ -220,19 +312,18 @@ button { font-family: inherit; }
 }
 .card:hover::before { opacity: 1; }
 
-/* Glass card variant */
-.card-glass {
-  background: var(--glass);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 20px;
-}
-
 /* ─── Divider ────────────────────────────────────────────────────── */
-.divider {
-  height: 1px;
-  background: var(--border);
+.divider { height: 1px; background: var(--border); }
+
+/* ─── Grain Overlay ─────────────────────────────────────────────── */
+.grain-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.06'/%3E%3C/svg%3E");
+  opacity: 0.5;
+  border-radius: inherit;
 }
 
 /* ─── Marquee ────────────────────────────────────────────────────── */
@@ -248,30 +339,12 @@ button { font-family: inherit; }
 .marquee-inner:hover { animation-play-state: paused; }
 
 /* ─── Pulse dot ──────────────────────────────────────────────────── */
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50%       { opacity: 0.4; }
+@keyframes pulse-ring {
+  0%   { box-shadow: 0 0 0 0   rgba(34,197,94,0.5); }
+  70%  { box-shadow: 0 0 0 8px rgba(34,197,94,0);   }
+  100% { box-shadow: 0 0 0 0   rgba(34,197,94,0);   }
 }
-.pulse { animation: pulse 2.2s ease-in-out infinite; }
-
-/* ─── Orb animation ──────────────────────────────────────────────── */
-@keyframes orb {
-  0%, 100% { opacity: 0.5; transform: scale(1); }
-  50%       { opacity: 0.8; transform: scale(1.06); }
-}
-
-/* ─── Fade animations ────────────────────────────────────────────── */
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(32px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-/* ─── Gradient border animation ─────────────────────────────────── */
-@keyframes gradientBorder {
-  0%   { background-position: 0% 50%; }
-  50%  { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
+.pulse { animation: pulse-ring 2s ease-out infinite; }
 
 /* ─── Float animation ───────────────────────────────────────────── */
 @keyframes float {
@@ -281,12 +354,6 @@ button { font-family: inherit; }
 .float-1 { animation: float 6s ease-in-out infinite; }
 .float-2 { animation: float 8s ease-in-out infinite 1s; }
 .float-3 { animation: float 7s ease-in-out infinite 2s; }
-
-/* ─── Shimmer loading animation ─────────────────────────────────── */
-@keyframes shimmer {
-  from { background-position: -200% 0; }
-  to   { background-position: 200% 0; }
-}
 
 /* ─── Gradient text animation ───────────────────────────────────── */
 @keyframes gradShift {
@@ -302,16 +369,20 @@ button { font-family: inherit; }
   animation: gradShift 5s ease-in-out infinite;
 }
 
-/* ─── Noise overlay ─────────────────────────────────────────────── */
-.noise::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-  pointer-events: none;
-  border-radius: inherit;
-  opacity: 0.5;
+/* ─── PWA & Mobile Utilities ─────────────────────────────────────── */
+/* Safe area padding — respects notch and home indicator */
+.safe-top    { padding-top:    env(safe-area-inset-top,    0px); }
+.safe-bottom { padding-bottom: env(safe-area-inset-bottom, 0px); }
+
+/* iOS momentum scrolling for scroll rails */
+.scroll-rail {
+  -webkit-overflow-scrolling: touch;
+  scroll-snap-type: x mandatory;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }
+.scroll-rail::-webkit-scrollbar { display: none; }
 
 /* ─── Responsive helpers ─────────────────────────────────────────── */
 .hide-mobile { display: none; }
@@ -347,33 +418,25 @@ button { font-family: inherit; }
 }
 @media (min-width: 768px) { .grid-4 { grid-template-columns: repeat(4, 1fr); } }
 
-/* ─── Responsive utilities ───────────────────────────────────────── */
+/* ─── Mobile / PWA overrides ─────────────────────────────────────── */
 @media (max-width: 480px) {
   .btn {
     white-space: normal !important;
     text-align: center;
-    padding: 12px 20px !important;
-    font-size: 13px !important;
+    padding: 13px 22px !important;
+    font-size: 14px !important;
   }
-  .display {
-    font-size: clamp(2.2rem, 10vw, 3rem) !important;
-  }
-  .heading-2 {
-    font-size: clamp(1.5rem, 7vw, 2rem) !important;
-  }
-  .section {
-    padding: 60px 0 !important;
-  }
+  .section { padding: 64px 0 !important; }
 }
 
-/* ─── Focus ring improvements ───────────────────────────────────── */
+/* ─── Focus ring ─────────────────────────────────────────────────── */
 *:focus-visible {
   outline: 2px solid var(--violet);
   outline-offset: 3px;
   border-radius: 4px;
 }
 
-/* ─── Selection style ───────────────────────────────────────────── */
+/* ─── Selection ─────────────────────────────────────────────────── */
 ::selection {
   background: rgba(107, 63, 255, 0.2);
   color: var(--violet);
@@ -386,4 +449,3 @@ button { font-family: inherit; }
     transition-duration: 0.01ms !important;
   }
 }
-

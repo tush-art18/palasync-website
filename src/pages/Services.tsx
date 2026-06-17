@@ -283,11 +283,11 @@ export default function Services() {
                   }}>
                     <div>
                       <div style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', color: 'var(--muted)', letterSpacing: '0.05em' }}>Starting Price</div>
-                      <div style={{ fontSize: '1.8rem', fontWeight: 800, color: 'var(--text)', fontFamily: 'Syne, sans-serif', marginTop: 4 }}>{service.price}</div>
+                      <div style={{ fontSize: '1.8rem', fontWeight: 800, color: 'var(--text)', marginTop: 4 }}>{service.price}</div>
                     </div>
                     <div>
                       <div style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', color: 'var(--muted)', letterSpacing: '0.05em' }}>Average Timeline</div>
-                      <div style={{ fontSize: '1.8rem', fontWeight: 800, color: 'var(--text)', fontFamily: 'Syne, sans-serif', marginTop: 4 }}>{service.timeline}</div>
+                      <div style={{ fontSize: '1.8rem', fontWeight: 800, color: 'var(--text)', marginTop: 4 }}>{service.timeline}</div>
                     </div>
                   </div>
 
@@ -478,7 +478,6 @@ export default function Services() {
           color: var(--muted);
           border: none;
           transition: all 220ms ease;
-          font-family: Syne, sans-serif;
           display: inline-flex;
           align-items: center;
         }

@@ -243,7 +243,6 @@ export default function Work() {
 
                         <div>
                           <h3 style={{
-                            fontFamily: 'Syne, sans-serif',
                             fontWeight: 800,
                             fontSize: '1.6rem',
                             color: 'var(--text)',
@@ -265,7 +264,7 @@ export default function Work() {
                           alignSelf: 'flex-start',
                         }}>
                           <div style={{ fontSize: 10, fontWeight: 700, textTransform: 'uppercase', color: 'var(--muted)', letterSpacing: '0.05em' }}>Key Result</div>
-                          <div style={{ fontSize: '1.25rem', fontWeight: 800, color: p.accent, fontFamily: 'Syne, sans-serif', marginTop: 2 }}>{p.stat}</div>
+                          <div style={{ fontSize: '1.25rem', fontWeight: 800, color: p.accent, marginTop: 2 }}>{p.stat}</div>
                         </div>
 
                         <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 13, fontWeight: 700, color: p.accent, marginTop: 8 }}>
@@ -398,7 +397,6 @@ export default function Work() {
                         fontSize: '2.5rem',
                         fontWeight: 800,
                         color: project.accent,
-                        fontFamily: 'Syne, sans-serif',
                         margin: '12px 0 6px',
                         lineHeight: 1,
                       }}>

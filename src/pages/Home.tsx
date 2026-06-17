@@ -1,91 +1,82 @@
 import { useRef, useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { motion, useInView, useMotionValue, useSpring } from 'framer-motion'
+import { motion, useInView, AnimatePresence } from 'framer-motion'
 import { Helmet } from 'react-helmet-async'
 
 // ─── Reveal wrapper ──────────────────────────────────────────────────
-function Reveal({ children, delay = 0, style = {} }: { children: React.ReactNode; delay?: number; style?: React.CSSProperties }) {
+function Reveal({
+  children,
+  delay = 0,
+  style = {},
+}: {
+  children: React.ReactNode
+  delay?: number
+  style?: React.CSSProperties
+}) {
   const ref = useRef<HTMLDivElement>(null)
-  const visible = useInView(ref, { once: true, margin: '-40px' })
+  const visible = useInView(ref, { once: true, margin: '-60px' })
   return (
-    <motion.div ref={ref} style={style}
-      initial={{ opacity: 0, y: 36 }}
+    <motion.div
+      ref={ref}
+      style={style}
+      initial={{ opacity: 0, y: 40 }}
       animate={visible ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.7, delay, ease: [0.22, 1, 0.36, 1] }}
-    >{children}</motion.div>
-  )
-}
-
-// ─── Magnetic tilt card ──────────────────────────────────────────────
-function TiltCard({ children, style = {} }: { children: React.ReactNode; style?: React.CSSProperties }) {
-  const ref = useRef<HTMLDivElement>(null)
-  const x = useMotionValue(0)
-  const y = useMotionValue(0)
-  const rotateX = useSpring(y, { stiffness: 300, damping: 30 })
-  const rotateY = useSpring(x, { stiffness: 300, damping: 30 })
-
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (!ref.current) return
-    const rect = ref.current.getBoundingClientRect()
-    const cx = rect.left + rect.width / 2
-    const cy = rect.top + rect.height / 2
-    x.set(((e.clientX - cx) / rect.width) * 12)
-    y.set(-(((e.clientY - cy) / rect.height) * 12))
-  }
-
-  return (
-    <motion.div ref={ref} style={{ ...style, perspective: 1000 }}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={() => { x.set(0); y.set(0) }}
+      transition={{ duration: 0.8, delay, ease: [0.22, 1, 0.36, 1] }}
     >
-      <motion.div style={{ rotateX, rotateY, transformStyle: 'preserve-3d' }}>
-        {children}
-      </motion.div>
+      {children}
     </motion.div>
   )
 }
 
-
 // ─── Data ────────────────────────────────────────────────────────────
+const HERO_WORDS = ['Convert.', 'Perform.', 'Impress.', 'Last.']
+
 const SERVICES = [
-  { icon: '✦', title: 'Web Design', desc: 'Custom Figma prototypes tailored for your audience. Layouts engineered to guide visitors toward conversion.', href: '/services/web-design', accent: '#6B3FFF', tag: 'UI/UX' },
-  { icon: '⚡', title: 'Web Development', desc: 'React, TypeScript, 98+ Lighthouse. Clean type-safe code that loads instantly and provides app-like speed.', href: '/services/web-development', accent: '#8B65FF', tag: 'React · TS' },
-  { icon: '◆', title: 'SaaS Products', desc: 'Full-stack apps with dashboards, secure login, database architecture, and Stripe payment integration.', href: '/services/saas-products', accent: '#22C55E', tag: 'Full-Stack' },
-  { icon: '❋', title: 'Branding', desc: 'Custom logos, typography pairings, and a complete digital stylebook to make your brand globally recognizable.', href: '/services/branding', accent: '#E8372A', tag: 'Identity' },
+  { n: '01', title: 'Web Design',      tag: 'UI/UX',       desc: 'Custom Figma prototypes tailored for your audience. Layouts engineered to guide visitors toward conversion — not just look good.', href: '/services/web-design',      accent: '#6B3FFF' },
+  { n: '02', title: 'Web Development', tag: 'React · TS',  desc: 'React, TypeScript, 98+ Lighthouse. Clean type-safe code that loads instantly and provides app-like speed with zero template bloat.', href: '/services/web-development', accent: '#8B65FF' },
+  { n: '03', title: 'SaaS Products',   tag: 'Full-Stack',  desc: 'Full-stack apps with dashboards, secure login, database architecture, and Stripe payment integration — built end-to-end.', href: '/services/saas-products',   accent: '#22C55E' },
+  { n: '04', title: 'Branding',        tag: 'Identity',    desc: 'Custom logos, typography pairings, and a complete digital stylebook to make your brand globally recognizable and consistent.', href: '/services/branding',        accent: '#C8FF00' },
 ]
 
 const WORK = [
-  { name: 'Brown Beans Coffee', cat: 'E-commerce · Branding', stat: '+240% orders', year: '2025', accent: '#C8813A', href: '/work/brown-beans-coffee', desc: 'Full brand identity and e-commerce conversion overhaul' },
-  { name: 'WoW Saplings', cat: 'SaaS Dashboard · Web App', stat: '3× traffic / 30 days', year: '2025', accent: '#22C55E', href: '/work/wow-saplings', desc: 'Interactive EdTech portal with real-time class analytics' },
-  { name: 'Client Portal Pro', cat: 'Full-Stack Web App', stat: '98 Lighthouse', year: '2024', accent: '#8B65FF', href: '/work/client-portal-pro', desc: 'Secure B2B collaboration platform with role-based access' },
+  { n: '01', name: 'Brown Beans Coffee', cat: 'E-commerce · Branding',    stat: '+240% orders',       year: '2025', desc: 'Full brand identity and e-commerce conversion overhaul',           href: '/work/brown-beans-coffee', accent: '#C8813A' },
+  { n: '02', name: 'WoW Saplings',       cat: 'SaaS Dashboard · Web App', stat: '3× traffic / 30d',  year: '2025', desc: 'Interactive EdTech portal with real-time class analytics',          href: '/work/wow-saplings',       accent: '#22C55E' },
+  { n: '03', name: 'Client Portal Pro',  cat: 'Full-Stack Web App',       stat: '98 Lighthouse',      year: '2024', desc: 'Secure B2B collaboration platform with role-based access',          href: '/work/client-portal-pro',  accent: '#8B65FF' },
+]
+
+const STATS = [
+  { value: '50+',    label: 'Projects Delivered', sub: 'since 2022' },
+  { value: '3 wks',  label: 'Average Delivery',   sub: 'fast without cutting corners' },
+  { value: '100%',   label: 'Client Satisfaction', sub: 'zero refund requests' },
+  { value: '₹9,999', label: 'Starting Price',      sub: 'world-class quality, India rates' },
 ]
 
 const PROCESS = [
-  { n: '01', title: 'Discover', body: 'Deep research into your market position and customer pain points before writing a single line of code.', icon: '🔍' },
-  { n: '02', title: 'Design', body: 'Custom Figma prototypes reviewed directly with you — covering desktop, tablet, and mobile breakpoints.', icon: '✦' },
-  { n: '03', title: 'Build', body: 'Clean React SPA implementation with zero template bloat, custom animations, and speed-optimized from line one.', icon: '⚡' },
-  { n: '04', title: 'Launch', body: 'Domain routing via Cloudflare, form submissions, sitemap indexing, and Google Search Console registration.', icon: '◆' },
+  { n: '01', title: 'Discover', body: 'Deep research into your market position and customer pain points before writing a single line of code.' },
+  { n: '02', title: 'Design',   body: 'Custom Figma prototypes reviewed directly with you — covering desktop, tablet, and mobile breakpoints.' },
+  { n: '03', title: 'Build',    body: 'Clean React SPA implementation with zero template bloat, custom animations, and speed-optimized from line one.' },
+  { n: '04', title: 'Launch',   body: 'Domain routing via Cloudflare, form submissions, sitemap indexing, and Google Search Console registration.' },
 ]
 
 const TESTIMONIALS = [
-  { q: 'PalaSync delivered a site our investors reference in meetings. The layout quality and speed speaks for itself.', name: 'Rahul M.', role: 'Founder · Codeink', accent: '#6B3FFF' },
-  { q: 'Three agencies gave us generic templates. PalaSync built our platform custom from scratch — completely different league.', name: 'Ananya S.', role: 'Owner · Sharpners', accent: '#8B65FF' },
-  { q: 'Launched in 19 days. Converts better than the site that cost us 5× more. Highly recommended.', name: 'Kiran T.', role: 'CEO · Junaids Group', accent: '#E8372A' },
+  { q: 'PalaSync delivered a site our investors reference in meetings. The layout quality and speed speaks for itself.',                        name: 'Rahul M.',  role: 'Founder · Codeink',          accent: '#6B3FFF' },
+  { q: 'Launched in 19 days. Converts better than the site that cost us 5× more. Highly recommended.',                                         name: 'Kiran T.',  role: 'CEO · Junaids Group',         accent: '#C8FF00' },
+  { q: 'The attention to detail was extraordinary. They thought about our users more than we did — and the results proved it.',                  name: 'Priya D.',  role: 'Head of Product · TechVenture', accent: '#22C55E' },
 ]
 
-const MARQUEE = ['Web Design', 'SaaS Products', 'Branding', 'React Apps', 'UI/UX Design', 'E-commerce', 'Web Design', 'SaaS Products', 'Branding', 'React Apps', 'UI/UX Design', 'E-commerce']
+const MARQUEE_ITEMS = ['Web Design','SaaS Products','Branding','React Apps','UI/UX Design','E-commerce','Web Design','SaaS Products','Branding','React Apps','UI/UX Design','E-commerce']
 
 // ─── Main Component ──────────────────────────────────────────────────
 export default function Home() {
-  const [activeService, setActiveService] = useState(0)
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 })
+  const [wordIndex, setWordIndex]         = useState(0)
+  const [expandedService, setExpandedService] = useState<number | null>(null)
+  const scrollRailRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      setMousePos({ x: e.clientX, y: e.clientY })
-    }
-    window.addEventListener('mousemove', handleMouseMove)
-    return () => window.removeEventListener('mousemove', handleMouseMove)
+    const interval = setInterval(() => {
+      setWordIndex(i => (i + 1) % HERO_WORDS.length)
+    }, 2200)
+    return () => clearInterval(interval)
   }, [])
 
   return (
@@ -95,874 +86,840 @@ export default function Home() {
         <meta name="description" content="PalaSync builds premium custom websites, SaaS platforms, and brand identities for Indian businesses. Starting ₹9,999. No templates, ever." />
       </Helmet>
 
-      {/* ══════════════════════════════════════════════════════════
-          §1  HERO — Dramatic mesh + floating orbs
-      ══════════════════════════════════════════════════════════ */}
+      {/* ════════════════════════════════════════════════════════
+          §1  HERO — Full-bleed editorial, bottom-anchored
+      ════════════════════════════════════════════════════════ */}
       <section style={{
-        position: 'relative', minHeight: '100svh', display: 'flex',
-        flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
-        textAlign: 'center', overflow: 'hidden', paddingTop: 110, paddingBottom: 80,
+        position: 'relative',
+        minHeight: '100svh',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'flex-end',
+        overflow: 'hidden',
+        /* Uses CSS variable — adapts: dark ink in light mode, elevated surface in dark mode */
+        background: 'var(--bg-accent)',
+        /* iOS PWA: pushes past the notch */
+        paddingTop: 'env(safe-area-inset-top, 0px)',
       }}>
-        {/* Animated gradient mesh */}
+        <div aria-hidden className="grain-overlay" />
+
+        {/* Primary violet glow */}
         <div aria-hidden style={{
-          position: 'absolute', inset: 0, zIndex: 0,
-          background: 'radial-gradient(ellipse 80% 60% at 50% -10%, rgba(107,63,255,0.15) 0%, transparent 60%), radial-gradient(ellipse 50% 40% at 80% 80%, rgba(139,101,255,0.08) 0%, transparent 50%), radial-gradient(ellipse 40% 30% at 10% 90%, rgba(232,55,42,0.05) 0%, transparent 50%)',
+          position: 'absolute', top: '-5%', right: '-8%',
+          width: 'min(750px, 100vw)', height: 'min(750px, 100vw)',
+          borderRadius: '50%',
+          background: 'radial-gradient(circle, rgba(107,63,255,0.22) 0%, transparent 68%)',
+          filter: 'blur(90px)', pointerEvents: 'none',
+        }} />
+        {/* Acid glow — bottom left */}
+        <div aria-hidden style={{
+          position: 'absolute', bottom: '-10%', left: '-5%',
+          width: 'min(450px, 80vw)', height: 'min(450px, 80vw)',
+          borderRadius: '50%',
+          background: 'radial-gradient(circle, rgba(200,255,0,0.06) 0%, transparent 70%)',
+          filter: 'blur(80px)', pointerEvents: 'none',
         }} />
 
-        {/* Animated moving cursor glow */}
-        <div aria-hidden style={{
-          position: 'fixed', zIndex: 0, pointerEvents: 'none',
-          width: 500, height: 500, borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(107,63,255,0.06) 0%, transparent 70%)',
-          transform: `translate(${mousePos.x - 250}px, ${mousePos.y - 250}px)`,
-          transition: 'transform 0.4s ease',
-        }} />
+        {/* Vertical label — desktop only */}
+        <div aria-hidden className="hero-label-left" style={{
+          position: 'absolute', left: 28, top: '50%',
+          transform: 'translateY(-50%) rotate(-90deg)',
+          transformOrigin: 'center center',
+          fontSize: 9, fontWeight: 700, letterSpacing: '0.3em',
+          textTransform: 'uppercase', color: 'var(--muted2-accent)',
+          whiteSpace: 'nowrap',
+        }}>PalaSync — Est. 2022 — India</div>
 
-        {/* Dot grid */}
-        <div aria-hidden style={{
-          position: 'absolute', inset: 0, zIndex: 0,
-          backgroundImage: 'radial-gradient(circle, rgba(107,63,255,0.18) 1px, transparent 1px)',
-          backgroundSize: '32px 32px',
-          maskImage: 'radial-gradient(ellipse 70% 60% at 50% 30%, black, transparent 100%)',
-          WebkitMaskImage: 'radial-gradient(ellipse 70% 60% at 50% 30%, black, transparent 100%)',
-          opacity: 0.5,
-        }} />
+        {/* Year marker — desktop only */}
+        <div aria-hidden className="hero-label-right" style={{
+          position: 'absolute', right: 28, top: 108,
+          fontSize: 9, fontWeight: 700, letterSpacing: '0.28em',
+          textTransform: 'uppercase', color: 'var(--muted2-accent)',
+        }}>2026</div>
 
-        {/* Floating orbs */}
-        {[
-          { size: 300, x: '-15%', y: '20%', color: 'rgba(107,63,255,0.12)', delay: 0 },
-          { size: 200, x: '80%', y: '15%', color: 'rgba(139,101,255,0.10)', delay: 1 },
-          { size: 150, x: '70%', y: '65%', color: 'rgba(232,55,42,0.07)', delay: 2 },
-        ].map((orb, i) => (
-          <motion.div key={i} aria-hidden
-            animate={{ y: [0, -20, 0], scale: [1, 1.05, 1] }}
-            transition={{ duration: 6 + i * 2, repeat: Infinity, ease: 'easeInOut', delay: orb.delay }}
-            style={{
-              position: 'absolute', zIndex: 0, pointerEvents: 'none',
-              width: orb.size, height: orb.size, borderRadius: '50%',
-              background: `radial-gradient(circle, ${orb.color} 0%, transparent 70%)`,
-              left: orb.x, top: orb.y, filter: 'blur(40px)',
-            }}
-          />
-        ))}
-
-        <div className="container" style={{ position: 'relative', zIndex: 1, maxWidth: 860 }}>
+        <div className="container" style={{
+          position: 'relative', zIndex: 1,
+          /* Extra top padding so content clears the fixed navbar + safe area */
+          paddingTop: 'calc(100px + env(safe-area-inset-top, 0px))',
+          paddingBottom: 'clamp(48px, 8vh, 84px)',
+        }}>
           {/* Availability badge */}
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}
-            style={{ display: 'flex', justifyContent: 'center', marginBottom: 32 }}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            style={{ marginBottom: 'clamp(32px, 5vw, 52px)' }}
           >
             <div style={{
-              display: 'inline-flex', alignItems: 'center', gap: 8,
-              padding: '7px 18px', borderRadius: 99,
-              background: 'rgba(34,197,94,0.08)',
-              border: '1px solid rgba(34,197,94,0.25)',
-              fontSize: 12, fontWeight: 600, color: '#22C55E',
-              backdropFilter: 'blur(8px)',
+              display: 'inline-flex', alignItems: 'center', gap: 9,
+              fontSize: 11, fontWeight: 600,
+              color: '#22C55E', letterSpacing: '0.08em',
             }}>
-              <span className="pulse" style={{ width: 6, height: 6, borderRadius: '50%', background: '#22C55E', display: 'inline-block', flexShrink: 0 }} />
+              <span className="pulse" style={{
+                width: 6, height: 6, borderRadius: '50%',
+                background: '#22C55E', display: 'inline-block', flexShrink: 0,
+              }} />
               Accepting new projects — June 2026
             </div>
           </motion.div>
 
-          {/* Main headline */}
-          <div style={{ overflow: 'hidden', marginBottom: 8 }}>
-            <motion.h1 className="display"
-              initial={{ y: '110%' }} animate={{ y: 0 }}
-              transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-              style={{ lineHeight: 1.05 }}
+          {/* ── Main headline: single h1, inline word swap ── */}
+          <div style={{ overflow: 'hidden', marginBottom: 'clamp(32px, 5vw, 52px)' }}>
+            <motion.h1
+              initial={{ y: '110%' }}
+              animate={{ y: 0 }}
+              transition={{ duration: 0.95, ease: [0.22, 1, 0.36, 1] }}
+              style={{
+                fontFamily: 'Syne, sans-serif', fontWeight: 800,
+                fontSize: 'clamp(2.6rem, 8vw, 7rem)',
+                lineHeight: 1.0, letterSpacing: '-0.035em',
+                color: 'var(--text-accent)', margin: 0,
+                wordBreak: 'break-word',
+              }}
             >
-              Your business deserves
+              We build websites
+              {' '}that{' '}
+              {/* Inline word-swap clip container */}
+              <span style={{
+                display: 'inline-block', verticalAlign: 'bottom',
+                overflow: 'hidden',
+                /* Height = 1 line of the current font */
+                lineHeight: '1em', height: '1.05em',
+              }}>
+                <AnimatePresence mode="wait">
+                  <motion.span
+                    key={wordIndex}
+                    initial={{ y: '110%' }}
+                    animate={{ y: 0 }}
+                    exit={{ y: '-110%' }}
+                    transition={{ duration: 0.48, ease: [0.22, 1, 0.36, 1] }}
+                    style={{
+                      display: 'inline-block',
+                      background: 'linear-gradient(135deg, #6B3FFF 0%, #A78BFA 60%, #8B65FF 100%)',
+                      WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
+                      lineHeight: '1em',
+                    }}
+                  >
+                    {HERO_WORDS[wordIndex]}
+                  </motion.span>
+                </AnimatePresence>
+              </span>
             </motion.h1>
           </div>
-          <div style={{ overflow: 'hidden', marginBottom: 32 }}>
-            <motion.div initial={{ y: '110%' }} animate={{ y: 0 }}
-              transition={{ duration: 0.8, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-            >
-              <span className="display" style={{
-                background: 'linear-gradient(135deg, #6B3FFF 0%, #A78BFA 45%, #8B65FF 100%)',
-                WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text', display: 'inline-block',
-              }}>a website that converts.</span>
-            </motion.div>
-          </div>
 
-          {/* Subtitle */}
-          <motion.p initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-            style={{ color: 'var(--muted)', maxWidth: 520, margin: '0 auto 44px', fontSize: '1.05rem', lineHeight: 1.75 }}
+          {/* Bottom bar */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.6 }}
+            style={{
+              display: 'flex', justifyContent: 'space-between',
+              alignItems: 'flex-end', gap: 24, flexWrap: 'wrap',
+              paddingTop: 28, borderTop: '1px solid var(--border-accent)',
+            }}
           >
-            We build premium custom websites, SaaS platforms, and brand identities for Indian businesses that refuse to look ordinary.
-          </motion.p>
-
-          {/* CTAs */}
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.45 }}
-            style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap', marginBottom: 52 }}
-          >
-            <Link to="/contact" className="btn btn-primary" style={{
-              padding: '15px 32px', fontSize: 15,
-              boxShadow: '0 0 30px rgba(107,63,255,0.35), 0 4px 16px rgba(107,63,255,0.2)',
-              position: 'relative', overflow: 'hidden',
+            <p style={{
+              color: 'var(--muted-accent)', maxWidth: 400,
+              fontSize: 'clamp(0.9rem, 2.5vw, 1rem)', lineHeight: 1.8,
+              margin: 0,
             }}>
-              Start a project
-            </Link>
-            <Link to="/work" className="btn btn-secondary" style={{ padding: '14px 32px', fontSize: 15 }}>
-              See our work →
-            </Link>
-          </motion.div>
-
-          {/* Social proof row */}
-          <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.7 }}
-            style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 24, flexWrap: 'wrap' }}
-          >
-            <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-              <div style={{ display: 'flex' }}>
-                {['R', 'A', 'K', 'P', 'M'].map((l, i) => (
-                  <div key={i} style={{
-                    width: 32, height: 32, borderRadius: '50%',
-                    background: `hsl(${255 + i * 15}, 70%, ${55 + i * 4}%)`,
-                    border: '2.5px solid var(--bg)', marginLeft: i > 0 ? -10 : 0,
-                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    fontFamily: 'Syne, sans-serif', fontWeight: 700, fontSize: 11, color: '#fff',
-                    boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
-                  }}>{l}</div>
-                ))}
-              </div>
-              <div style={{ textAlign: 'left' }}>
-                <div style={{ display: 'flex', gap: 1 }}>
-                  {[...Array(5)].map((_, i) => <span key={i} style={{ color: '#F59E0B', fontSize: 12 }}>★</span>)}
-                </div>
-                <div style={{ fontSize: 11, color: 'var(--muted)' }}>Trusted by <strong style={{ color: 'var(--text)' }}>50+ brands</strong></div>
-              </div>
+              Premium custom websites, SaaS platforms, and brand identities for
+              Indian businesses that refuse to look ordinary.
+            </p>
+            <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+              <Link to="/contact" className="btn btn-acid" style={{ fontSize: 14 }}>
+                Start a project
+              </Link>
+              <Link to="/work" className="btn btn-ghost-light" style={{ fontSize: 14 }}>
+                See our work →
+              </Link>
             </div>
-            <div style={{ width: 1, height: 32, background: 'var(--border)', flexShrink: 0 }} className="hide-mobile" />
-            {['Custom-coded', '98+ Lighthouse', 'From ₹9,999'].map(badge => (
-              <span key={badge} style={{
-                fontSize: 11, fontWeight: 600, color: 'var(--muted-2)',
-                display: 'flex', alignItems: 'center', gap: 5,
-              }}>
-                <span style={{ color: 'var(--violet)', fontSize: 8 }}>◆</span> {badge}
-              </span>
-            ))}
           </motion.div>
         </div>
 
-        {/* ── Floating hero visual cards (desktop only via .hero-float-card) ── */}
+        {/* Scroll line */}
         <motion.div
-          initial={{ opacity: 0, x: -40, y: 20 }} animate={{ opacity: 1, x: 0, y: 0 }}
-          transition={{ duration: 0.9, delay: 0.85, ease: [0.22, 1, 0.36, 1] }}
-          className="hero-float-card"
-          style={{ position: 'absolute', left: 'clamp(16px,4vw,56px)', top: '28%', zIndex: 2 }}
+          animate={{ y: [0, 10, 0] }}
+          transition={{ duration: 2.2, repeat: Infinity, ease: 'easeInOut' }}
+          style={{
+            position: 'absolute', bottom: 24, left: '50%',
+            transform: 'translateX(-50%)',
+            display: 'flex', flexDirection: 'column', alignItems: 'center',
+            opacity: 0.2, zIndex: 1,
+          }}
         >
-          <div style={{
-            background: 'var(--surface)', border: '1px solid var(--border)',
-            borderRadius: 20, padding: '18px 22px', minWidth: 160,
-            boxShadow: '0 24px 48px rgba(0,0,0,0.12), 0 4px 16px rgba(107,63,255,0.08)',
-          }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10 }}>
-              <div style={{ width: 28, height: 28, borderRadius: 8, background: 'rgba(34,197,94,0.12)', border: '1px solid rgba(34,197,94,0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 13 }}>📈</div>
-              <span style={{ fontSize: 10, fontWeight: 700, color: 'var(--muted)', letterSpacing: '0.05em', textTransform: 'uppercase' }}>Traffic Growth</span>
-            </div>
-            <div style={{ fontFamily: 'Syne, sans-serif', fontWeight: 800, fontSize: 26, color: '#22C55E', letterSpacing: '-0.03em', lineHeight: 1 }}>+240%</div>
-            <div style={{ fontSize: 11, color: 'var(--muted)', marginTop: 4 }}>Avg. client growth</div>
-            <div style={{ marginTop: 12, height: 4, borderRadius: 99, background: 'rgba(34,197,94,0.12)', overflow: 'hidden' }}>
-              <motion.div initial={{ width: 0 }} animate={{ width: '78%' }} transition={{ duration: 1.2, delay: 1.3, ease: [0.22,1,0.36,1] }}
-                style={{ height: '100%', background: '#22C55E', borderRadius: 99 }} />
-            </div>
-          </div>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, x: 40, y: -20 }} animate={{ opacity: 1, x: 0, y: 0 }}
-          transition={{ duration: 0.9, delay: 1.0, ease: [0.22, 1, 0.36, 1] }}
-          className="hero-float-card"
-          style={{ position: 'absolute', right: 'clamp(16px,4vw,56px)', top: '22%', zIndex: 2 }}
-        >
-          <div style={{
-            background: 'var(--surface)', border: '1px solid var(--border)',
-            borderRadius: 20, padding: '18px 22px',
-            boxShadow: '0 24px 48px rgba(0,0,0,0.12), 0 4px 16px rgba(107,63,255,0.08)',
-          }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
-              <span style={{ fontSize: 16 }}>⚡</span>
-              <span style={{ fontSize: 10, fontWeight: 700, color: 'var(--muted)', letterSpacing: '0.05em', textTransform: 'uppercase' }}>Lighthouse</span>
-            </div>
-            <div style={{ fontFamily: 'Syne, sans-serif', fontWeight: 800, fontSize: 28, color: 'var(--violet)', letterSpacing: '-0.03em', lineHeight: 1 }}>98</div>
-            <div style={{ fontSize: 10, color: '#22C55E', fontWeight: 600, marginTop: 3 }}>Performance Score</div>
-            <div style={{ display: 'flex', gap: 4, marginTop: 10 }}>
-              {(['Perf','SEO','A11y','BP'] as const).map((lbl, idx) => (
-                <div key={lbl} style={{ textAlign: 'center' }}>
-                  <div style={{ width: 28, height: 28, borderRadius: 8, background: 'rgba(34,197,94,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 9, fontWeight: 800, color: '#22C55E' }}>{[98,100,97,100][idx]}</div>
-                  <div style={{ fontSize: 8, color: 'var(--muted)', marginTop: 3 }}>{lbl}</div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, x: 40, y: 40 }} animate={{ opacity: 1, x: 0, y: 0 }}
-          transition={{ duration: 0.9, delay: 1.15, ease: [0.22, 1, 0.36, 1] }}
-          className="hero-float-card"
-          style={{ position: 'absolute', right: 'clamp(16px,4vw,56px)', top: '56%', zIndex: 2 }}
-        >
-          <div style={{
-            background: 'var(--surface)', border: '1px solid var(--border)',
-            borderRadius: 20, padding: '16px 20px', maxWidth: 220,
-            boxShadow: '0 24px 48px rgba(0,0,0,0.12), 0 4px 16px rgba(107,63,255,0.08)',
-          }}>
-            <div style={{ display: 'flex', gap: 1, marginBottom: 8 }}>{[...Array(5)].map((_,j) => <span key={j} style={{ color: '#F59E0B', fontSize: 11 }}>★</span>)}</div>
-            <p style={{ fontSize: 11, color: 'var(--text-2)', lineHeight: 1.6, fontStyle: 'italic', marginBottom: 10 }}>
-              "Launched in 19 days. Converts better than what cost us 5× more."
-            </p>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-              <div style={{ width: 26, height: 26, borderRadius: '50%', background: 'linear-gradient(135deg,#E8372A,#E8372A88)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'Syne, sans-serif', fontWeight: 800, fontSize: 10, color: '#fff' }}>K</div>
-              <div>
-                <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--text)' }}>Kiran T.</div>
-                <div style={{ fontSize: 10, color: 'var(--muted)' }}>CEO · Junaids Group</div>
-              </div>
-            </div>
-          </div>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, x: -40, y: 40 }} animate={{ opacity: 1, x: 0, y: 0 }}
-          transition={{ duration: 0.9, delay: 1.3, ease: [0.22, 1, 0.36, 1] }}
-          className="hero-float-card"
-          style={{ position: 'absolute', left: 'clamp(16px,4vw,56px)', top: '57%', zIndex: 2 }}
-        >
-          <div style={{
-            background: 'var(--bg-alt)', border: '1px solid var(--border)',
-            borderRadius: 20, padding: '16px 20px', fontFamily: 'monospace',
-            boxShadow: '0 24px 48px rgba(0,0,0,0.12), 0 4px 16px rgba(107,63,255,0.08)',
-          }}>
-            <div style={{ display: 'flex', gap: 5, marginBottom: 10 }}>
-              {['#FF5F57','#FFBD2E','#28C840'].map(c => <div key={c} style={{ width: 9, height: 9, borderRadius: '50%', background: c }} />)}
-            </div>
-            <div style={{ fontSize: 11, lineHeight: 1.9 }}>
-              <span style={{ color: '#A78BFA' }}>const</span><span style={{ color: 'var(--text-2)' }}> score </span><span style={{ color: 'var(--muted)' }}>=</span><span style={{ color: '#22C55E' }}> 98</span><span style={{ color: 'var(--muted)' }}>;</span><br />
-              <span style={{ color: '#A78BFA' }}>const</span><span style={{ color: 'var(--text-2)' }}> built </span><span style={{ color: 'var(--muted)' }}>=</span><span style={{ color: '#F59E0B' }}> true</span><span style={{ color: 'var(--muted)' }}>;</span>
-            </div>
-          </div>
-        </motion.div>
-
-        {/* Scroll hint */}
-        <motion.div animate={{ y: [0, 8, 0] }} transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
-          style={{ position: 'absolute', bottom: 32, left: '50%', transform: 'translateX(-50%)', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6, opacity: 0.4, zIndex: 1 }}
-        >
-          <span style={{ fontSize: 9, letterSpacing: '0.15em', textTransform: 'uppercase', color: 'var(--muted)' }}>Scroll</span>
-          <div style={{ width: 1, height: 32, background: 'linear-gradient(to bottom, var(--violet), transparent)' }} />
+          <div style={{ width: 1, height: 48, background: 'linear-gradient(to bottom, transparent, var(--text-accent))' }} />
         </motion.div>
       </section>
 
-      {/* ══════════════════════════════════════════════════════════
-          §2  MARQUEE TICKER
-      ══════════════════════════════════════════════════════════ */}
+      {/* ════════════════════════════════════════════════════════
+          §2  MARQUEE — Skewed scrolling ticker
+      ════════════════════════════════════════════════════════ */}
       <div style={{
-        borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)',
-        padding: '16px 0', overflow: 'hidden', background: 'var(--surface)',
-        position: 'relative',
+        borderTop: '1px solid var(--border-accent)',
+        borderBottom: '1px solid var(--border-accent)',
+        padding: '18px 0', overflow: 'hidden',
+        background: 'var(--bg-accent)',
+        transform: 'skewY(-1.2deg)',
+        marginTop: -1, position: 'relative', zIndex: 1,
       }}>
-        <div style={{
-          position: 'absolute', left: 0, top: 0, bottom: 0, width: 80, zIndex: 1,
-          background: 'linear-gradient(to right, var(--surface), transparent)',
-          pointerEvents: 'none',
-        }} />
-        <div style={{
-          position: 'absolute', right: 0, top: 0, bottom: 0, width: 80, zIndex: 1,
-          background: 'linear-gradient(to left, var(--surface), transparent)',
-          pointerEvents: 'none',
-        }} />
         <div className="marquee-inner">
-          {MARQUEE.map((item, i) => (
+          {MARQUEE_ITEMS.map((item, i) => (
             <span key={i} style={{
-              display: 'inline-flex', alignItems: 'center', gap: 20,
-              padding: '0 28px', fontSize: 11, fontWeight: 700,
-              letterSpacing: '0.12em', textTransform: 'uppercase',
-              color: 'var(--muted)', whiteSpace: 'nowrap',
+              display: 'inline-flex', alignItems: 'center', gap: 22,
+              padding: '0 30px', fontSize: 12, fontWeight: 700,
+              letterSpacing: '0.18em', textTransform: 'uppercase',
+              color: i % 4 === 0 ? '#6B3FFF' : i % 4 === 2 ? 'rgba(200,255,0,0.55)' : 'var(--muted-accent)',
+              whiteSpace: 'nowrap',
             }}>
-              <span style={{ color: 'var(--violet)', fontSize: 7 }}>◆</span>
+              <span style={{ fontSize: 6, opacity: 0.4 }}>{i % 2 === 0 ? '◆' : '/'}</span>
               {item}
             </span>
           ))}
         </div>
       </div>
 
-
-
-      {/* ══════════════════════════════════════════════════════════
-          §4  SERVICES — Interactive tab + detail panel
-      ══════════════════════════════════════════════════════════ */}
-      <section className="section" style={{ background: 'var(--bg-alt)', position: 'relative', overflow: 'hidden' }}>
-        <div aria-hidden style={{
-          position: 'absolute', top: '-20%', right: '-10%', width: 500, height: 500,
-          background: 'radial-gradient(circle, rgba(107,63,255,0.07) 0%, transparent 70%)',
-          pointerEvents: 'none', filter: 'blur(60px)',
-        }} />
+      {/* ════════════════════════════════════════════════════════
+          §3  SERVICES — Numbered accordion list
+      ════════════════════════════════════════════════════════ */}
+      <section style={{ background: 'var(--bg)', padding: 'clamp(72px, 12vw, 140px) 0' }}>
         <div className="container">
-          <Reveal style={{ textAlign: 'center', marginBottom: 56 }}>
-            <div className="label" style={{ marginBottom: 16 }}>Our Expertise</div>
-            <h2 className="heading-2">
-              Services<span style={{ color: 'var(--red)' }}>.</span>
-            </h2>
-            <p style={{ color: 'var(--muted)', maxWidth: 440, margin: '16px auto 0', fontSize: '0.95rem', lineHeight: 1.7 }}>
-              Every service is custom-scoped. We don't subcontract — every mockup and line of code is produced in-house.
-            </p>
-          </Reveal>
-
-          {/* Service tab selector */}
-          <Reveal delay={0.1} style={{ marginBottom: 36 }}>
-            <div style={{
-              display: 'flex', gap: 8, flexWrap: 'wrap', justifyContent: 'center',
-              background: 'var(--surface)', border: '1px solid var(--border)',
-              borderRadius: 16, padding: 8, maxWidth: 640, margin: '0 auto',
-            }}>
-              {SERVICES.map((svc, i) => (
-                <button key={svc.title}
-                  onClick={() => setActiveService(i)}
-                  style={{
-                    padding: '10px 20px', borderRadius: 10, border: 'none', cursor: 'pointer',
-                    fontSize: 13, fontWeight: 700, fontFamily: 'Syne, sans-serif',
-                    transition: 'all 220ms ease',
-                    background: activeService === i ? svc.accent : 'transparent',
-                    color: activeService === i ? '#fff' : 'var(--muted)',
-                    flex: '1 1 auto', minWidth: 120,
-                  }}
-                >
-                  <span style={{ marginRight: 6, fontSize: 11 }}>{svc.icon}</span>
-                  {svc.title}
-                </button>
-              ))}
-            </div>
-          </Reveal>
-
-          {/* Active service detail + all cards */}
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: 20 }} className="services-main-grid">
-            {/* Featured active card */}
-            <motion.div key={activeService}
-              initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-              style={{
-                background: 'var(--surface)', borderRadius: 24,
-                border: `1px solid ${SERVICES[activeService].accent}40`,
-                padding: 'clamp(28px, 4vw, 48px)',
-                position: 'relative', overflow: 'hidden',
-                boxShadow: `0 20px 60px -20px ${SERVICES[activeService].accent}30`,
-              }}
-            >
-              <div style={{
-                position: 'absolute', top: 0, left: 0, right: 0, height: 3,
-                background: `linear-gradient(90deg, transparent, ${SERVICES[activeService].accent}, transparent)`,
-              }} />
-              <div style={{
-                position: 'absolute', top: '-30%', right: '-10%', width: 350, height: 350,
-                background: `radial-gradient(circle, ${SERVICES[activeService].accent}12 0%, transparent 70%)`,
-                pointerEvents: 'none',
-              }} />
-              <div style={{ position: 'relative', display: 'flex', flexDirection: 'column', gap: 24 }}>
-                <div style={{ display: 'flex', alignItems: 'flex-start', gap: 20, flexWrap: 'wrap' }}>
-                  <div style={{
-                    width: 60, height: 60, borderRadius: 16, flexShrink: 0,
-                    background: `${SERVICES[activeService].accent}18`,
-                    border: `1px solid ${SERVICES[activeService].accent}30`,
-                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    fontSize: 26, color: SERVICES[activeService].accent,
-                  }}>
-                    {SERVICES[activeService].icon}
-                  </div>
-                  <div style={{ flex: 1 }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 8, flexWrap: 'wrap' }}>
-                      <h3 style={{ fontSize: 'clamp(1.4rem, 3vw, 1.8rem)', color: 'var(--text)', fontFamily: 'Syne, sans-serif', fontWeight: 800 }}>
-                        {SERVICES[activeService].title}
-                      </h3>
-                      <span style={{
-                        fontSize: 10, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase',
-                        color: SERVICES[activeService].accent,
-                        background: `${SERVICES[activeService].accent}18`,
-                        border: `1px solid ${SERVICES[activeService].accent}30`,
-                        padding: '3px 10px', borderRadius: 99,
-                      }}>{SERVICES[activeService].tag}</span>
-                    </div>
-                    <p style={{ color: 'var(--muted)', lineHeight: 1.7, fontSize: '0.95rem', maxWidth: 520 }}>
-                      {SERVICES[activeService].desc}
-                    </p>
-                  </div>
-                </div>
-                <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
-                  <Link to={SERVICES[activeService].href} className="btn btn-primary"
-                    style={{ background: SERVICES[activeService].accent, boxShadow: `0 8px 24px ${SERVICES[activeService].accent}40` }}
-                  >
-                    View scope & pricing →
-                  </Link>
-                  <Link to="/contact" className="btn btn-secondary">Book a discussion</Link>
-                </div>
+          <Reveal style={{ marginBottom: 56 }}>
+            <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: 16, flexWrap: 'wrap' }}>
+              <div>
+                <p className="section-overline">Our Expertise</p>
+                <h2 className="section-heading">
+                  Services<span style={{ color: 'var(--red)' }}>.</span>
+                </h2>
               </div>
-            </motion.div>
-
-            {/* Mini cards for others */}
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: 16 }} className="services-mini-grid">
-              {SERVICES.map((svc, i) => i !== activeService && (
-                <TiltCard key={svc.title}>
-                  <div
-                    onClick={() => setActiveService(i)}
-                    style={{
-                      background: 'var(--surface)', border: '1px solid var(--border)',
-                      borderRadius: 20, padding: '24px 24px',
-                      cursor: 'pointer', transition: 'all 220ms ease',
-                      display: 'flex', gap: 16, alignItems: 'flex-start',
-                    }}
-                    onMouseEnter={e => {
-                      e.currentTarget.style.borderColor = svc.accent + '60'
-                      e.currentTarget.style.boxShadow = `0 8px 24px ${svc.accent}15`
-                    }}
-                    onMouseLeave={e => {
-                      e.currentTarget.style.borderColor = 'var(--border)'
-                      e.currentTarget.style.boxShadow = 'none'
-                    }}
-                  >
-                    <div style={{
-                      width: 44, height: 44, borderRadius: 12, flexShrink: 0,
-                      background: `${svc.accent}12`,
-                      border: `1px solid ${svc.accent}25`,
-                      display: 'flex', alignItems: 'center', justifyContent: 'center',
-                      fontSize: 20, color: svc.accent,
-                    }}>{svc.icon}</div>
-                    <div>
-                      <h3 style={{ fontSize: '1rem', marginBottom: 6, fontFamily: 'Syne, sans-serif', fontWeight: 700 }}>{svc.title}</h3>
-                      <p style={{ fontSize: '0.82rem', color: 'var(--muted)', lineHeight: 1.6 }}>{svc.desc}</p>
-                      <span style={{ fontSize: 12, fontWeight: 700, color: svc.accent, marginTop: 10, display: 'inline-block' }}>Explore →</span>
-                    </div>
-                  </div>
-                </TiltCard>
-              ))}
+              <Link to="/services" className="subtle-link">Full details & pricing →</Link>
             </div>
-          </div>
-
-          <Reveal style={{ textAlign: 'center', marginTop: 40 }}>
-            <Link to="/services" className="btn btn-secondary" style={{ display: 'inline-flex' }}>
-              Full service details & pricing →
-            </Link>
           </Reveal>
-        </div>
-      </section>
 
-      {/* ══════════════════════════════════════════════════════════
-          §5  SELECTED WORK — Full-bleed cards
-      ══════════════════════════════════════════════════════════ */}
-      <section className="section" style={{ background: 'var(--bg)', position: 'relative', overflow: 'hidden' }}>
-        <div aria-hidden style={{
-          position: 'absolute', bottom: '-20%', left: '-10%', width: 500, height: 500,
-          background: 'radial-gradient(circle, rgba(139,101,255,0.07) 0%, transparent 70%)',
-          pointerEvents: 'none', filter: 'blur(60px)',
-        }} />
-        <div className="container">
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: 48, flexWrap: 'wrap', gap: 20 }}>
-            <Reveal>
-              <div className="label" style={{ marginBottom: 12 }}>Portfolio</div>
-              <h2 className="heading-2">Selected Work<span style={{ color: 'var(--red)' }}>.</span></h2>
-            </Reveal>
-            <Reveal delay={0.1}>
-              <Link to="/work" className="btn btn-secondary" style={{ display: 'inline-flex', fontSize: 13 }}>
-                All Case Studies →
-              </Link>
-            </Reveal>
-          </div>
-
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-            {WORK.map((w, i) => (
-              <Reveal key={w.name} delay={i * 0.1}>
-                <Link to={w.href} style={{ textDecoration: 'none', display: 'block' }}>
-                  <div style={{
-                    background: 'var(--surface)', border: '1px solid var(--border)',
-                    borderRadius: 24, padding: 'clamp(24px, 4vw, 40px)',
-                    position: 'relative', overflow: 'hidden', cursor: 'pointer',
-                    transition: 'all 280ms cubic-bezier(0.22, 1, 0.36, 1)',
+          {SERVICES.map((svc, i) => (
+            <Reveal key={svc.n} delay={i * 0.06}>
+              <div
+                style={{ borderTop: '1px solid var(--border)', cursor: 'pointer' }}
+                onClick={() => setExpandedService(expandedService === i ? null : i)}
+              >
+                {/* Row header */}
+                <div
+                  className={`svc-row ${expandedService === i ? 'svc-row--open' : ''}`}
+                  style={{
+                    display: 'grid',
+                    gridTemplateColumns: '40px 1fr auto',
+                    alignItems: 'center',
+                    gap: 16,
+                    padding: 'clamp(20px, 3vw, 30px) 0',
                   }}
-                    onMouseEnter={e => {
-                      e.currentTarget.style.borderColor = w.accent + '60'
-                      e.currentTarget.style.transform = 'translateY(-4px)'
-                      e.currentTarget.style.boxShadow = `0 24px 48px ${w.accent}15`
-                    }}
-                    onMouseLeave={e => {
-                      e.currentTarget.style.borderColor = 'var(--border)'
-                      e.currentTarget.style.transform = 'none'
-                      e.currentTarget.style.boxShadow = 'none'
-                    }}
-                  >
-                    {/* Gradient accent top border */}
-                    <div style={{
-                      position: 'absolute', top: 0, left: 0, right: 0, height: 3,
-                      background: `linear-gradient(90deg, transparent, ${w.accent}, transparent)`,
-                      opacity: 0.7,
-                    }} />
-                    {/* Background accent glow */}
-                    <div style={{
-                      position: 'absolute', top: '-20%', right: '-5%', width: 280, height: 280,
-                      background: `radial-gradient(circle, ${w.accent}10 0%, transparent 70%)`,
-                      pointerEvents: 'none',
-                    }} />
-                    <div style={{ position: 'relative', display: 'flex', flexDirection: 'column', gap: 16 }}>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: 12 }}>
-                        <div>
-                          <span style={{
-                            fontSize: 11, fontWeight: 700, color: w.accent,
-                            background: `${w.accent}12`, border: `1px solid ${w.accent}25`,
-                            padding: '3px 10px', borderRadius: 99, letterSpacing: '0.04em',
-                          }}>{w.cat}</span>
-                          <h3 style={{
-                            fontFamily: 'Syne, sans-serif', fontWeight: 800,
-                            fontSize: 'clamp(1.3rem, 3vw, 1.6rem)', color: 'var(--text)',
-                            marginTop: 12, marginBottom: 6,
-                          }}>{w.name}</h3>
-                          <p style={{ fontSize: '0.875rem', color: 'var(--muted)', lineHeight: 1.6, maxWidth: 400 }}>{w.desc}</p>
-                        </div>
-                        <div style={{
-                          display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: 8, flexShrink: 0,
-                        }}>
-                          <span style={{ fontSize: 12, color: 'var(--muted-2)', fontWeight: 500 }}>{w.year}</span>
-                          <div style={{
-                            padding: '10px 20px', borderRadius: 12,
-                            background: `${w.accent}12`, border: `1px solid ${w.accent}25`,
-                          }}>
-                            <span style={{ fontSize: 16, fontWeight: 800, color: w.accent, fontFamily: 'Syne, sans-serif' }}>{w.stat}</span>
-                          </div>
-                        </div>
-                      </div>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: 6, color: w.accent, fontSize: 13, fontWeight: 700 }}>
-                        View case study <span>→</span>
-                      </div>
-                    </div>
-                  </div>
-                </Link>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ══════════════════════════════════════════════════════════
-          §6  MANIFESTO — Bold typographic statement
-      ══════════════════════════════════════════════════════════ */}
-      <section style={{ background: 'var(--bg-alt)', padding: '100px 0', position: 'relative', overflow: 'hidden' }}>
-        <div aria-hidden style={{
-          position: 'absolute', inset: 0,
-          backgroundImage: 'radial-gradient(circle, rgba(107,63,255,0.1) 1px, transparent 1px)',
-          backgroundSize: '40px 40px', opacity: 0.3,
-          maskImage: 'radial-gradient(ellipse 80% 60% at 50% 50%, black, transparent)',
-          WebkitMaskImage: 'radial-gradient(ellipse 80% 60% at 50% 50%, black, transparent)',
-        }} />
-        <div className="container" style={{ maxWidth: 820, textAlign: 'center', position: 'relative' }}>
-          <Reveal>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 20, marginBottom: 56, justifyContent: 'center' }}>
-              <div style={{ flex: 1, height: 1, background: 'linear-gradient(to right, transparent, var(--border))' }} />
-              <div className="label">Our belief</div>
-              <div style={{ flex: 1, height: 1, background: 'linear-gradient(to left, transparent, var(--border))' }} />
-            </div>
-          </Reveal>
-
-          {[
-            { pre: 'A great website is not', em: 'designed in an afternoon.' },
-            { pre: "It's researched, debated,", em: 'and built with intent.' },
-          ].map((line, i) => (
-            <motion.p key={i}
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: i * 0.12, ease: [0.22, 1, 0.36, 1] }}
-              style={{
-                fontFamily: 'Syne, sans-serif', fontWeight: 800,
-                fontSize: 'clamp(1.7rem, 4.5vw, 3.2rem)',
-                lineHeight: 1.15, letterSpacing: '-0.025em',
-                marginBottom: 10, color: 'var(--text)',
-              }}
-            >
-              {line.pre}{' '}
-              <span style={{
-                background: 'linear-gradient(135deg, #6B3FFF, #A78BFA)',
-                WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
-              }}>{line.em}</span>
-            </motion.p>
-          ))}
-
-          <Reveal delay={0.3} style={{ marginTop: 56 }}>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2,1fr)', gap: 16 }} className="belief-grid">
-              {[
-                { icon: '✦', label: 'Custom-coded', desc: 'No page builders or drag-and-drop platforms' },
-                { icon: '⚡', label: '98+ Lighthouse', desc: 'Speed-optimized from the first commit' },
-                { icon: '🇮🇳', label: 'India pricing', desc: 'World-class quality at local market rates' },
-                { icon: '◆', label: 'No templates', desc: 'Every layout designed for your brand only' },
-              ].map(v => (
-                <div key={v.label} style={{
-                  padding: '24px 20px', background: 'var(--surface)',
-                  border: '1px solid var(--border)', borderRadius: 20,
-                  textAlign: 'left', transition: 'all 220ms ease',
-                  display: 'flex', gap: 14, alignItems: 'flex-start',
-                }}
-                  onMouseEnter={e => { e.currentTarget.style.borderColor = 'var(--violet)'; e.currentTarget.style.transform = 'translateY(-2px)' }}
-                  onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.transform = 'none' }}
                 >
                   <span style={{
-                    fontSize: 20, color: 'var(--violet)', flexShrink: 0,
-                    width: 40, height: 40, borderRadius: 10,
-                    background: 'var(--violet-mute)', display: 'flex',
-                    alignItems: 'center', justifyContent: 'center',
-                  }}>{v.icon}</span>
-                  <div>
-                    <div style={{ fontSize: '0.9rem', fontWeight: 700, color: 'var(--text)', marginBottom: 4 }}>{v.label}</div>
-                    <div style={{ fontSize: '0.78rem', color: 'var(--muted)', lineHeight: 1.5 }}>{v.desc}</div>
+                    fontSize: '0.72rem',
+                    fontWeight: 700, color: 'var(--muted-2)', letterSpacing: '0.06em',
+                  }}>
+                    {svc.n}
+                  </span>
+
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 14, minWidth: 0 }}>
+                    <h3 style={{
+                      fontWeight: 800,
+                      fontSize: 'clamp(1.15rem, 3.5vw, 2.2rem)',
+                      letterSpacing: '-0.025em', color: 'var(--text)', margin: 0,
+                      transition: 'color 240ms ease',
+                    }} className="svc-title">
+                      {svc.title}
+                    </h3>
+                    <span className="svc-tag" style={{
+                      fontSize: 10, fontWeight: 700, letterSpacing: '0.1em',
+                      textTransform: 'uppercase', flexShrink: 0,
+                      color: svc.accent === '#C8FF00' ? '#080810' : svc.accent,
+                      background: svc.accent === '#C8FF00' ? 'rgba(200,255,0,0.85)' : `${svc.accent}16`,
+                      border: svc.accent === '#C8FF00' ? 'none' : `1px solid ${svc.accent}30`,
+                      padding: '4px 12px', borderRadius: 99,
+                    }}>
+                      {svc.tag}
+                    </span>
                   </div>
+
+                  <motion.span
+                    animate={{ rotate: expandedService === i ? 45 : 0 }}
+                    transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+                    style={{
+                      fontSize: 22, color: 'var(--muted)', display: 'inline-block',
+                      lineHeight: 1, fontWeight: 300,
+                      /* Ensure tap target */
+                      padding: '4px 8px', margin: '-4px -8px',
+                    }}
+                  >+</motion.span>
                 </div>
-              ))}
-            </div>
-          </Reveal>
+
+                {/* Expand panel */}
+                <AnimatePresence>
+                  {expandedService === i && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: 'auto', opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.38, ease: [0.22, 1, 0.36, 1] }}
+                      style={{ overflow: 'hidden' }}
+                    >
+                      <div style={{
+                        paddingBottom: 32,
+                        paddingLeft: 'clamp(40px, 5vw, 56px)',
+                        display: 'flex', gap: 24,
+                        alignItems: 'flex-start', flexWrap: 'wrap',
+                      }}>
+                        <p style={{
+                          color: 'var(--muted)', lineHeight: 1.8,
+                          fontSize: 'clamp(0.9rem, 2vw, 1rem)',
+                          flex: 1, minWidth: 220, margin: 0,
+                        }}>
+                          {svc.desc}
+                        </p>
+                        <div style={{ display: 'flex', gap: 10, flexShrink: 0, flexWrap: 'wrap' }}>
+                          <Link to={svc.href} className="btn btn-primary" style={{
+                            background: svc.accent,
+                            boxShadow: `0 8px 24px ${svc.accent}35`,
+                            fontSize: 13,
+                            color: svc.accent === '#C8FF00' ? '#080810' : '#fff',
+                          }}>
+                            View scope →
+                          </Link>
+                          <Link to="/contact" className="btn btn-secondary" style={{ fontSize: 13 }}>
+                            Book a call
+                          </Link>
+                        </div>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            </Reveal>
+          ))}
+          <div style={{ borderTop: '1px solid var(--border)' }} />
         </div>
       </section>
 
-      {/* ══════════════════════════════════════════════════════════
-          §6b STATS — After Our Belief
-      ══════════════════════════════════════════════════════════ */}
-      <section style={{ padding: '72px 0', background: 'var(--bg)', position: 'relative', overflow: 'hidden' }}>
+      {/* ════════════════════════════════════════════════════════
+          §4  SELECTED WORK — Full-width editorial rows
+      ════════════════════════════════════════════════════════ */}
+      <section style={{
+        background: 'var(--bg-alt)',
+        padding: 'clamp(72px, 12vw, 140px) 0',
+        position: 'relative', overflow: 'hidden',
+      }}>
         <div aria-hidden style={{
-          position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%,-50%)',
-          width: 700, height: 260,
-          background: 'radial-gradient(ellipse, rgba(107,63,255,0.06) 0%, transparent 70%)',
-          pointerEvents: 'none',
+          position: 'absolute', bottom: 0, right: '-5%',
+          width: 600, height: 600,
+          background: 'radial-gradient(circle, rgba(107,63,255,0.05) 0%, transparent 70%)',
+          filter: 'blur(60px)', pointerEvents: 'none',
         }} />
         <div className="container">
-          <div className="stats-row">
-            {([
-              { value: '50+',    label: 'Projects\nDelivered',    color: '#6B3FFF' },
-              { value: '3 wks',  label: 'Avg. Delivery\nTime',    color: '#8B65FF' },
-              { value: '100%',   label: 'Client\nSatisfaction',   color: '#22C55E' },
-              { value: '₹9,999', label: 'Starting\nPrice',        color: '#E8372A' },
-            ] as { value: string; label: string; color: string }[]).map((s, idx) => (
-              <motion.div
-                key={s.label}
-                initial={{ opacity: 0, y: 28 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: idx * 0.1, ease: [0.22, 1, 0.36, 1] }}
-                style={{
-                  flex: '1 1 0', minWidth: 0,
-                  background: 'var(--surface)', border: '1px solid var(--border)',
-                  borderRadius: 20,
-                  padding: 'clamp(20px,3vw,32px) clamp(10px,2vw,20px)',
-                  position: 'relative', overflow: 'hidden', textAlign: 'center',
-                }}
-              >
-                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, transparent, ${s.color}, transparent)` }} />
-                <div style={{ position: 'absolute', top: 0, left: '50%', transform: 'translateX(-50%)', width: '100%', height: '70%', background: `radial-gradient(ellipse at 50% 0%, ${s.color}15, transparent 70%)`, pointerEvents: 'none' }} />
-                <div style={{ fontFamily: 'Syne, sans-serif', fontWeight: 800, fontSize: 'clamp(1.4rem, 3vw, 2.6rem)', letterSpacing: '-0.03em', lineHeight: 1.05, color: s.color, marginBottom: 10, position: 'relative' }}>{s.value}</div>
-                <div style={{ fontSize: 'clamp(9px, 1.1vw, 11px)', fontWeight: 700, letterSpacing: '0.07em', textTransform: 'uppercase', color: 'var(--muted)', lineHeight: 1.45, whiteSpace: 'pre-line', position: 'relative' }}>{s.label}</div>
-              </motion.div>
-            ))}
-          </div>
+          <Reveal style={{ marginBottom: 56 }}>
+            <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: 16, flexWrap: 'wrap' }}>
+              <div>
+                <p className="section-overline">Portfolio</p>
+                <h2 className="section-heading">
+                  Selected Work<span style={{ color: 'var(--red)' }}>.</span>
+                </h2>
+              </div>
+              <Link to="/work" className="subtle-link">All case studies →</Link>
+            </div>
+          </Reveal>
+
+          {WORK.map((w, i) => (
+            <Reveal key={w.n} delay={i * 0.08}>
+              <Link to={w.href} style={{ textDecoration: 'none', display: 'block' }}>
+                <div
+                  className="work-row"
+                  style={{
+                    borderTop: '1px solid var(--border)',
+                    padding: 'clamp(24px, 4vw, 44px) 0',
+                    display: 'grid',
+                    gridTemplateColumns: '48px 1fr',
+                    gap: 'clamp(14px, 3vw, 32px)',
+                    alignItems: 'center',
+                    position: 'relative',
+                    transition: 'padding-left 320ms cubic-bezier(0.22, 1, 0.36, 1)',
+                  }}
+                  onMouseEnter={e => {
+                    e.currentTarget.style.paddingLeft = '20px'
+                    ;(e.currentTarget.querySelector('.work-border') as HTMLElement)?.style && ((e.currentTarget.querySelector('.work-border') as HTMLElement).style.opacity = '1')
+                    ;(e.currentTarget.querySelector('.work-num') as HTMLElement)?.style && ((e.currentTarget.querySelector('.work-num') as HTMLElement).style.color = w.accent)
+                    ;(e.currentTarget.querySelector('.work-title') as HTMLElement)?.style && ((e.currentTarget.querySelector('.work-title') as HTMLElement).style.color = w.accent)
+                  }}
+                  onMouseLeave={e => {
+                    e.currentTarget.style.paddingLeft = '0'
+                    ;(e.currentTarget.querySelector('.work-border') as HTMLElement)?.style && ((e.currentTarget.querySelector('.work-border') as HTMLElement).style.opacity = '0')
+                    ;(e.currentTarget.querySelector('.work-num') as HTMLElement)?.style && ((e.currentTarget.querySelector('.work-num') as HTMLElement).style.color = 'var(--muted-2)')
+                    ;(e.currentTarget.querySelector('.work-title') as HTMLElement)?.style && ((e.currentTarget.querySelector('.work-title') as HTMLElement).style.color = 'var(--text)')
+                  }}
+                >
+                  <div className="work-border" style={{
+                    position: 'absolute', left: 0, top: 0, bottom: 0,
+                    width: 3, background: w.accent,
+                    opacity: 0, transition: 'opacity 320ms ease',
+                    borderRadius: '0 2px 2px 0',
+                  }} />
+
+                  <span className="work-num" style={{
+                    fontSize: 'clamp(1rem, 2.5vw, 1.8rem)',
+                    fontWeight: 800, color: 'var(--muted-2)',
+                    letterSpacing: '-0.02em', transition: 'color 320ms ease', lineHeight: 1,
+                    flexShrink: 0,
+                  }}>{w.n}</span>
+
+                  {/* Content + stat row */}
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 16, minWidth: 0 }}>
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 6, flexWrap: 'wrap' }}>
+                        <span style={{
+                          fontSize: 10, fontWeight: 700, letterSpacing: '0.1em',
+                          textTransform: 'uppercase', color: w.accent,
+                        }}>{w.cat}</span>
+                        <span style={{ fontSize: 11, color: 'var(--muted-2)' }}>{w.year}</span>
+                      </div>
+                      <h3 className="work-title" style={{
+                        fontWeight: 800,
+                        fontSize: 'clamp(1.05rem, 2.5vw, 1.7rem)',
+                        letterSpacing: '-0.025em', color: 'var(--text)',
+                        margin: '0 0 5px', transition: 'color 320ms ease',
+                        overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
+                      }}>{w.name}</h3>
+                      <p style={{ fontSize: 'clamp(0.78rem, 1.5vw, 0.875rem)', color: 'var(--muted)', lineHeight: 1.55, margin: 0 }}>
+                        {w.desc}
+                      </p>
+                    </div>
+                    <div className="work-stat" style={{ textAlign: 'right', flexShrink: 0 }}>
+                      <div style={{
+                        fontWeight: 800,
+                        fontSize: 'clamp(0.9rem, 2vw, 1.4rem)',
+                        color: w.accent, letterSpacing: '-0.02em', lineHeight: 1.2,
+                      }}>{w.stat}</div>
+                      <div style={{ fontSize: 10, color: 'var(--muted)', marginTop: 3 }}>result</div>
+                    </div>
+                  </div>
+                </div>
+              </Link>
+            </Reveal>
+          ))}
+          <div style={{ borderTop: '1px solid var(--border)' }} />
         </div>
       </section>
 
-      {/* ══════════════════════════════════════════════════════════
-          §7  PROCESS — Animated vertical timeline
-      ══════════════════════════════════════════════════════════ */}
-      <section className="section" style={{ background: 'var(--bg)', position: 'relative' }}>
-        <div className="container">
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: 56, flexWrap: 'wrap', gap: 20 }}>
+      {/* ════════════════════════════════════════════════════════
+          §5  MANIFESTO — Split-screen diagonal
+      ════════════════════════════════════════════════════════ */}
+      <section style={{ position: 'relative', overflow: 'hidden' }}>
+        <div className="manifesto-grid">
+          {/* Left: Violet — always violet in both themes */}
+          <div style={{
+            background: 'var(--violet)',
+            padding: 'clamp(52px, 10vw, 96px) clamp(24px, 6vw, 72px)',
+            display: 'flex', flexDirection: 'column', justifyContent: 'center',
+            position: 'relative', overflow: 'hidden',
+            minHeight: 'clamp(340px, 45vw, 540px)',
+          }}>
+            <div aria-hidden style={{
+              position: 'absolute', top: '-20%', right: '-20%',
+              width: 380, height: 380,
+              background: 'radial-gradient(circle, rgba(255,255,255,0.12) 0%, transparent 70%)',
+              pointerEvents: 'none',
+            }} />
             <Reveal>
-              <div className="label" style={{ marginBottom: 12 }}>Workflow</div>
-              <h2 className="heading-2">Process<span style={{ color: 'var(--red)' }}>.</span></h2>
-            </Reveal>
-            <Reveal delay={0.1}>
-              <p style={{ color: 'var(--muted)', fontSize: '0.95rem', lineHeight: 1.7, maxWidth: 300 }}>
-                Brief to live. Four clean phases to launch your product.
+              <p style={{
+                fontSize: 10, fontWeight: 700, letterSpacing: '0.25em',
+                textTransform: 'uppercase', color: 'rgba(255,255,255,0.5)',
+                marginBottom: 28,
+              }}>Our Belief</p>
+              <p style={{
+                fontFamily: 'Syne, sans-serif', fontWeight: 800,
+                fontSize: 'clamp(1.4rem, 3.5vw, 2.6rem)',
+                lineHeight: 1.18, letterSpacing: '-0.025em',
+                color: '#fff', margin: 0,
+              }}>
+                A great website is not designed in an afternoon.
               </p>
             </Reveal>
           </div>
 
-          <div style={{ position: 'relative' }}>
-            {/* Vertical connector line */}
-            <div style={{
-              position: 'absolute', left: 28, top: 0, bottom: 0, width: 2,
-              background: 'linear-gradient(to bottom, var(--violet), transparent)',
-              opacity: 0.2,
-            }} className="process-line" />
-
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
-              {PROCESS.map((step, i) => (
-                <Reveal key={step.n} delay={i * 0.1}>
-                  <div style={{
-                    display: 'grid', gridTemplateColumns: '60px 1fr',
-                    gap: '0 28px', padding: '32px 0',
-                    borderBottom: i < PROCESS.length - 1 ? '1px solid var(--border)' : 'none',
-                    alignItems: 'start', position: 'relative',
-                  }}>
-                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 0 }}>
-                      <div style={{
-                        width: 56, height: 56, borderRadius: 16,
-                        background: 'var(--surface)',
-                        border: '1px solid var(--border)',
-                        display: 'flex', alignItems: 'center', justifyContent: 'center',
-                        flexShrink: 0, position: 'relative', zIndex: 1,
-                        transition: 'all 220ms ease',
-                      }}
-                        onMouseEnter={e => { e.currentTarget.style.background = 'var(--violet)'; e.currentTarget.style.borderColor = 'var(--violet)' }}
-                        onMouseLeave={e => { e.currentTarget.style.background = 'var(--surface)'; e.currentTarget.style.borderColor = 'var(--border)' }}
-                      >
-                        <span style={{ fontFamily: 'Syne, sans-serif', fontWeight: 800, fontSize: 13, color: 'var(--muted)' }}>{step.n}</span>
-                      </div>
-                    </div>
-                    <div style={{ paddingTop: 10 }}>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 10 }}>
-                        <span style={{ fontSize: 16, color: 'var(--violet)' }}>{step.icon}</span>
-                        <h3 style={{ fontSize: '1.15rem', fontFamily: 'Syne, sans-serif', fontWeight: 800, color: 'var(--text)' }}>{step.title}</h3>
-                      </div>
-                      <p style={{ fontSize: '0.875rem', color: 'var(--muted)', lineHeight: 1.7, maxWidth: 500 }}>{step.body}</p>
-                    </div>
+          {/* Right: Adaptive — dark in light mode, elevated in dark mode */}
+          <div style={{
+            background: 'var(--bg-accent)',
+            padding: 'clamp(52px, 10vw, 96px) clamp(24px, 6vw, 72px)',
+            display: 'flex', flexDirection: 'column', justifyContent: 'space-between',
+            borderLeft: '1px solid var(--border-accent)',
+            minHeight: 'clamp(340px, 45vw, 540px)',
+          }}>
+            <Reveal delay={0.15}>
+              <p style={{
+                fontFamily: 'Syne, sans-serif', fontWeight: 800,
+                fontSize: 'clamp(1.4rem, 3.5vw, 2.6rem)',
+                lineHeight: 1.18, letterSpacing: '-0.025em',
+                color: 'var(--text-accent)', marginBottom: 40,
+              }}>
+                It's researched, debated,{' '}
+                <span style={{
+                  background: 'linear-gradient(135deg, #6B3FFF, #A78BFA)',
+                  WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
+                }}>and built with intent.</span>
+              </p>
+              <div style={{ display: 'flex', gap: 'clamp(20px, 5vw, 48px)', flexWrap: 'wrap', marginBottom: 40 }}>
+                {[
+                  { v: 'No templates',   s: 'Every layout built from scratch' },
+                  { v: 'Custom code',    s: 'No page builders, ever' },
+                  { v: '98+ Lighthouse', s: 'Speed-first from commit one' },
+                ].map(item => (
+                  <div key={item.v}>
+                    <div style={{ fontSize: '0.875rem', fontWeight: 700, color: 'var(--text-accent)', marginBottom: 4 }}>{item.v}</div>
+                    <div style={{ fontSize: '0.78rem', color: 'var(--subtext-accent)' }}>{item.s}</div>
                   </div>
-                </Reveal>
-              ))}
-            </div>
+                ))}
+              </div>
+            </Reveal>
+            <Reveal delay={0.25}>
+              <Link to="/about" style={{
+                fontSize: 13, fontWeight: 600,
+                color: 'var(--muted-accent)',
+                textDecoration: 'none', letterSpacing: '0.04em',
+                transition: 'color 220ms ease',
+              }}
+                onMouseEnter={e => (e.currentTarget.style.color = 'var(--text-accent)')}
+                onMouseLeave={e => (e.currentTarget.style.color = 'var(--muted-accent)')}
+              >
+                Our story & team →
+              </Link>
+            </Reveal>
           </div>
         </div>
       </section>
 
-      {/* ══════════════════════════════════════════════════════════
-          §8  TESTIMONIALS — Staggered card grid
-      ══════════════════════════════════════════════════════════ */}
-      <section className="section" style={{ background: 'var(--bg-alt)', position: 'relative', overflow: 'hidden' }}>
-        <div aria-hidden style={{
-          position: 'absolute', top: '30%', right: '-15%', width: 400, height: 400,
-          background: 'radial-gradient(circle, rgba(107,63,255,0.07) 0%, transparent 70%)',
-          filter: 'blur(60px)', pointerEvents: 'none',
-        }} />
+      {/* ════════════════════════════════════════════════════════
+          §6  STATS — Stacked editorial numbers
+      ════════════════════════════════════════════════════════ */}
+      <section style={{ background: 'var(--bg)', padding: 'clamp(72px, 12vw, 140px) 0' }}>
         <div className="container">
-          <Reveal style={{ textAlign: 'center', marginBottom: 56 }}>
-            <div className="label" style={{ marginBottom: 16 }}>Reviews</div>
-            <h2 className="heading-2">Client Voices<span style={{ color: 'var(--red)' }}>.</span></h2>
-            <p style={{ color: 'var(--muted)', maxWidth: 380, margin: '16px auto 0', fontSize: '0.9rem', lineHeight: 1.7 }}>
-              What happens in the months after we deliver the code.
-            </p>
+          <Reveal style={{ marginBottom: 48 }}>
+            <p className="section-overline">By the numbers</p>
+          </Reveal>
+          {STATS.map((s, i) => (
+            <Reveal key={s.label} delay={i * 0.07}>
+              <div className="stat-row" style={{
+                display: 'grid',
+                alignItems: 'center', gap: 16,
+                padding: 'clamp(20px, 3vw, 32px) 0',
+                borderTop: '1px solid var(--border)',
+              }}>
+                <div style={{
+                  fontFamily: 'Syne, sans-serif', fontWeight: 800,
+                  fontSize: 'clamp(2.2rem, 6.5vw, 5rem)',
+                  letterSpacing: '-0.045em', color: 'var(--text)', lineHeight: 1,
+                }}>{s.value}</div>
+                <div>
+                  <div style={{ fontSize: 'clamp(0.875rem, 1.5vw, 1rem)', fontWeight: 700, color: 'var(--text)', marginBottom: 4 }}>{s.label}</div>
+                  <div style={{ fontSize: '0.78rem', color: 'var(--muted)' }}>{s.sub}</div>
+                </div>
+                <div className="stat-index" style={{
+                  fontSize: '0.7rem',
+                  fontWeight: 700, letterSpacing: '0.14em',
+                  textTransform: 'uppercase', color: 'var(--muted-2)', textAlign: 'right',
+                }}>0{i + 1}</div>
+              </div>
+            </Reveal>
+          ))}
+          <div style={{ borderTop: '1px solid var(--border)' }} />
+        </div>
+      </section>
+
+      {/* ════════════════════════════════════════════════════════
+          §7  PROCESS — Zigzag timeline
+      ════════════════════════════════════════════════════════ */}
+      <section style={{ background: 'var(--bg)', padding: 'clamp(72px, 12vw, 140px) 0' }}>
+        <div className="container">
+          <Reveal style={{ marginBottom: 64 }}>
+            <p className="section-overline">How we work</p>
+            <h2 className="section-heading">
+              Our process<span style={{ color: 'var(--red)' }}>.</span>
+            </h2>
           </Reveal>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: 20 }} className="testimonials-grid">
-            {TESTIMONIALS.map((t, i) => (
-              <Reveal key={t.name} delay={i * 0.1}>
-                <TiltCard>
+          {/* Desktop: Alternating list */}
+          <div className="process-desktop" style={{ position: 'relative' }}>
+            <div style={{
+              position: 'absolute', left: '50%', top: 0, bottom: 0,
+              width: 1, background: 'var(--border)',
+            }} />
+            {PROCESS.map((step, i) => (
+              <Reveal key={step.n} delay={i * 0.1}>
+                <div style={{
+                  display: 'grid', gridTemplateColumns: '1fr 60px 1fr',
+                  alignItems: 'center', marginBottom: 80,
+                }}>
+                  {/* Left slot */}
                   <div style={{
-                    background: 'var(--surface)', border: '1px solid var(--border)',
-                    borderRadius: 24, padding: 'clamp(24px, 4vw, 36px)',
-                    display: 'flex', flexDirection: 'column', gap: 20,
-                    position: 'relative', overflow: 'hidden', height: '100%',
-                    transition: 'all 220ms ease',
-                  }}
-                    onMouseEnter={e => { e.currentTarget.style.borderColor = t.accent + '40'; e.currentTarget.style.boxShadow = `0 16px 40px ${t.accent}12` }}
-                    onMouseLeave={e => { e.currentTarget.style.borderColor = 'var(--border)'; e.currentTarget.style.boxShadow = 'none' }}
-                  >
-                    <div style={{
-                      position: 'absolute', top: 0, left: 0, right: 0, height: 2,
-                      background: `linear-gradient(90deg, transparent, ${t.accent}, transparent)`,
-                    }} />
-                    <div style={{
-                      position: 'absolute', top: '-20%', right: '-10%', width: 200, height: 200,
-                      background: `radial-gradient(circle, ${t.accent}10 0%, transparent 70%)`,
-                      pointerEvents: 'none',
-                    }} />
-                    {/* Stars */}
-                    <div style={{ display: 'flex', gap: 3 }}>
-                      {[...Array(5)].map((_, j) => <span key={j} style={{ color: '#F59E0B', fontSize: 13 }}>★</span>)}
-                    </div>
-                    {/* Quote */}
-                    <p style={{ fontSize: '0.9rem', color: 'var(--text-2)', lineHeight: 1.75, fontStyle: 'italic', position: 'relative' }}>
-                      <span style={{ color: t.accent, fontSize: 28, fontFamily: 'Georgia, serif', lineHeight: 0.5, verticalAlign: -8 }}>"</span>
-                      {t.q}
-                      <span style={{ color: t.accent, fontSize: 28, fontFamily: 'Georgia, serif', lineHeight: 0.5, verticalAlign: -8 }}>"</span>
-                    </p>
-                    {/* Attribution */}
-                    <div style={{
-                      display: 'flex', alignItems: 'center', gap: 12,
-                      paddingTop: 16, borderTop: '1px solid var(--border)', marginTop: 'auto',
-                    }}>
-                      <div style={{
-                        width: 40, height: 40, borderRadius: '50%', flexShrink: 0,
-                        background: `linear-gradient(135deg, ${t.accent}, ${t.accent}88)`,
-                        display: 'flex', alignItems: 'center', justifyContent: 'center',
-                        fontFamily: 'Syne, sans-serif', fontWeight: 800, fontSize: 14, color: '#fff',
-                        boxShadow: `0 4px 12px ${t.accent}40`,
-                      }}>{t.name[0]}</div>
-                      <div>
-                        <div style={{ fontSize: '0.875rem', fontWeight: 700, color: 'var(--text)' }}>{t.name}</div>
-                        <div style={{ fontSize: '0.75rem', color: 'var(--muted)' }}>{t.role}</div>
-                      </div>
-                    </div>
+                    textAlign: 'right', paddingRight: 52,
+                    opacity: i % 2 === 0 ? 1 : 0.12,
+                    pointerEvents: i % 2 === 0 ? 'auto' : 'none',
+                    transition: 'opacity 300ms ease',
+                  }}>
+                    <h3 style={{
+                      fontFamily: 'Syne, sans-serif',
+                      fontWeight: 800,
+                      fontSize: 'clamp(1.2rem, 2.5vw, 1.75rem)',
+                      letterSpacing: '-0.025em', color: 'var(--text)', marginBottom: 10,
+                    }}>{step.title}</h3>
+                    <p style={{ fontSize: '0.875rem', color: 'var(--muted)', lineHeight: 1.75, margin: 0, maxWidth: 300, marginLeft: 'auto' }}>{step.body}</p>
                   </div>
-                </TiltCard>
+
+                  {/* Center circle */}
+                  <div style={{ display: 'flex', justifyContent: 'center' }}>
+                    <div style={{
+                      width: 60, height: 60, borderRadius: '50%',
+                      border: '1.5px solid var(--border-2)', background: 'var(--surface)',
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      fontWeight: 800, fontSize: 12,
+                      color: 'var(--violet)', letterSpacing: '0.04em', flexShrink: 0,
+                      boxShadow: '0 4px 20px rgba(107,63,255,0.1)',
+                    }}>{step.n}</div>
+                  </div>
+
+                  {/* Right slot */}
+                  <div style={{
+                    paddingLeft: 52,
+                    opacity: i % 2 !== 0 ? 1 : 0.12,
+                    pointerEvents: i % 2 !== 0 ? 'auto' : 'none',
+                    transition: 'opacity 300ms ease',
+                  }}>
+                    <h3 style={{
+                      fontFamily: 'Syne, sans-serif',
+                      fontWeight: 800,
+                      fontSize: 'clamp(1.2rem, 2.5vw, 1.75rem)',
+                      letterSpacing: '-0.025em', color: 'var(--text)', marginBottom: 10,
+                    }}>{step.title}</h3>
+                    <p style={{ fontSize: '0.875rem', color: 'var(--muted)', lineHeight: 1.75, margin: 0, maxWidth: 300 }}>{step.body}</p>
+                  </div>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+
+          {/* Mobile: numbered vertical list */}
+          <div className="process-mobile">
+            {PROCESS.map((step, i) => (
+              <Reveal key={step.n} delay={i * 0.1}>
+                <div style={{
+                  display: 'flex', gap: 18,
+                  paddingBottom: 32, marginBottom: 32,
+                  borderBottom: i < PROCESS.length - 1 ? '1px solid var(--border)' : 'none',
+                }}>
+                  <div style={{
+                    width: 48, height: 48, borderRadius: '50%', flexShrink: 0,
+                    border: '1.5px solid var(--border-2)', background: 'var(--surface)',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    fontWeight: 800, fontSize: 12,
+                    color: 'var(--violet)',
+                  }}>{step.n}</div>
+                  <div>
+                    <h3 style={{
+                      fontFamily: 'Syne, sans-serif',
+                      fontWeight: 800,
+                      fontSize: '1.1rem', letterSpacing: '-0.02em',
+                      color: 'var(--text)', marginBottom: 8,
+                    }}>{step.title}</h3>
+                    <p style={{ fontSize: '0.875rem', color: 'var(--muted)', lineHeight: 1.75, margin: 0 }}>{step.body}</p>
+                  </div>
+                </div>
               </Reveal>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ══════════════════════════════════════════════════════════
-          §9  CTA — Dramatic gradient card
-      ══════════════════════════════════════════════════════════ */}
-      <section className="section" style={{ background: 'var(--bg)' }}>
-        <div className="container">
+      {/* ════════════════════════════════════════════════════════
+          §8  TESTIMONIALS — Horizontal scroll rail
+      ════════════════════════════════════════════════════════ */}
+      <section style={{
+        background: 'var(--bg)',
+        padding: 'clamp(72px, 12vw, 140px) 0 clamp(40px, 6vw, 80px)',
+        overflow: 'hidden',
+      }}>
+        <div className="container" style={{ marginBottom: 44 }}>
           <Reveal>
-            <div style={{
-              borderRadius: 28, padding: 'clamp(48px, 7vw, 80px) clamp(28px, 6vw, 64px)',
-              textAlign: 'center', position: 'relative', overflow: 'hidden',
-              background: 'var(--surface)',
-              border: '1px solid rgba(107,63,255,0.2)',
-              boxShadow: '0 0 0 1px rgba(107,63,255,0.05), 0 40px 80px -24px rgba(107,63,255,0.12)',
-            }}>
-              {/* Gradient mesh BG */}
-              <div aria-hidden style={{
-                position: 'absolute', inset: 0,
-                background: 'radial-gradient(ellipse 70% 50% at 50% -10%, rgba(107,63,255,0.12) 0%, transparent 60%), radial-gradient(ellipse 50% 40% at 100% 100%, rgba(139,101,255,0.07) 0%, transparent 60%), radial-gradient(ellipse 40% 30% at 0% 100%, rgba(232,55,42,0.05) 0%, transparent 60%)',
-                pointerEvents: 'none',
-              }} />
-              {/* Dot grid overlay */}
-              <div aria-hidden style={{
-                position: 'absolute', inset: 0,
-                backgroundImage: 'radial-gradient(circle, rgba(107,63,255,0.15) 1px, transparent 1px)',
-                backgroundSize: '28px 28px', opacity: 0.4,
-                maskImage: 'radial-gradient(ellipse 60% 50% at 50% 50%, black, transparent)',
-                WebkitMaskImage: 'radial-gradient(ellipse 60% 50% at 50% 50%, black, transparent)',
-                pointerEvents: 'none',
-              }} />
+            <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', flexWrap: 'wrap', gap: 14 }}>
+              <div>
+                <p className="section-overline">Reviews</p>
+                <h2 className="section-heading">
+                  Client Voices<span style={{ color: 'var(--red)' }}>.</span>
+                </h2>
+              </div>
+              <p style={{ fontSize: '0.875rem', color: 'var(--muted)', maxWidth: 260, lineHeight: 1.65, margin: 0 }}>
+                What happens in the months after we deliver.
+              </p>
+            </div>
+          </Reveal>
+        </div>
 
-              <div style={{ position: 'relative' }}>
-                <div className="label" style={{ display: 'inline-flex', marginBottom: 20 }}>
-                  <span className="pulse" style={{ width: 6, height: 6, borderRadius: '50%', background: '#22C55E', flexShrink: 0 }} />
-                  Accepting projects now
+        {/* Scroll rail — iOS momentum + snap */}
+        <div
+          ref={scrollRailRef}
+          className="scroll-rail"
+          style={{
+            display: 'flex', gap: 16,
+            paddingLeft:  'max(20px, calc((100vw - 1100px) / 2 + 40px))',
+            paddingRight: 'max(20px, calc((100vw - 1100px) / 2 + 40px))',
+            paddingBottom: 8,
+          }}
+        >
+          {TESTIMONIALS.map((t, i) => (
+            <motion.div
+              key={t.name}
+              initial={{ opacity: 0, x: 40 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: i * 0.09 }}
+              style={{
+                flexShrink: 0,
+                width: 'clamp(268px, 34vw, 360px)',
+                scrollSnapAlign: 'start',
+                background: 'var(--surface)',
+                border: '1px solid var(--border)',
+                borderRadius: 22,
+                padding: 'clamp(24px, 4vw, 36px)',
+                display: 'flex', flexDirection: 'column',
+                position: 'relative', overflow: 'hidden',
+              }}
+            >
+              <div style={{
+                position: 'absolute', top: 0, left: 0, right: 0, height: 2,
+                background: `linear-gradient(90deg, ${t.accent}, transparent 80%)`,
+              }} />
+              <div style={{
+                fontFamily: 'Georgia, serif', fontSize: 76,
+                color: `${t.accent}18`, lineHeight: 0.7,
+                marginBottom: 8, fontWeight: 700, userSelect: 'none',
+              }}>"</div>
+              <div style={{ display: 'flex', gap: 3, marginBottom: 14 }}>
+                {[...Array(5)].map((_, j) => (
+                  <span key={j} style={{ color: '#F59E0B', fontSize: 12 }}>★</span>
+                ))}
+              </div>
+              <p style={{
+                fontSize: 'clamp(0.83rem, 1.5vw, 0.9rem)',
+                color: 'var(--text-2)', lineHeight: 1.8,
+                flex: 1, margin: '0 0 22px', fontStyle: 'italic',
+              }}>{t.q}</p>
+              <div style={{
+                display: 'flex', alignItems: 'center', gap: 12,
+                paddingTop: 18, borderTop: '1px solid var(--border)',
+              }}>
+                <div style={{
+                  width: 38, height: 38, borderRadius: '50%', flexShrink: 0,
+                  background: `linear-gradient(135deg, ${t.accent}, ${t.accent}88)`,
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  fontFamily: 'Syne, sans-serif', fontWeight: 800, fontSize: 13,
+                  color: t.accent === '#C8FF00' ? '#080810' : '#fff',
+                }}>{t.name[0]}</div>
+                <div>
+                  <div style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--text)' }}>{t.name}</div>
+                  <div style={{ fontSize: '0.72rem', color: 'var(--muted)' }}>{t.role}</div>
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </section>
+
+      {/* ════════════════════════════════════════════════════════
+          §9  CTA — Premium floating card layout
+      ════════════════════════════════════════════════════════ */}
+      <section style={{
+        background: 'var(--bg-alt)',
+        padding: 'clamp(60px, 10vw, 100px) 0',
+        /* iOS: bottom safe area for home indicator */
+        paddingBottom: 'max(clamp(60px, 10vw, 100px), calc(clamp(60px, 10vw, 100px) + env(safe-area-inset-bottom, 0px)))',
+        position: 'relative', overflow: 'hidden',
+      }}>
+        <div className="container" style={{ position: 'relative', zIndex: 1 }}>
+          <Reveal>
+            <div className="cta-card" style={{
+              background: 'linear-gradient(135deg, var(--surface) 0%, var(--surface-2) 100%)',
+              border: '1px solid var(--border)',
+              borderRadius: '32px',
+              padding: 'clamp(40px, 8vw, 80px) clamp(20px, 6vw, 60px)',
+              boxShadow: '0 32px 80px -20px rgba(107, 63, 255, 0.08)',
+              position: 'relative',
+              overflow: 'hidden',
+              textAlign: 'center',
+            }}>
+              {/* Internal glows */}
+              <div aria-hidden style={{
+                position: 'absolute', top: '-20%', right: '-10%',
+                width: 350, height: 350, borderRadius: '50%',
+                background: 'radial-gradient(circle, rgba(107,63,255,0.08) 0%, transparent 70%)',
+                filter: 'blur(40px)', pointerEvents: 'none',
+              }} />
+              <div aria-hidden style={{
+                position: 'absolute', bottom: '-20%', left: '-10%',
+                width: 250, height: 250, borderRadius: '50%',
+                background: 'radial-gradient(circle, rgba(200,255,0,0.04) 0%, transparent 70%)',
+                filter: 'blur(30px)', pointerEvents: 'none',
+              }} />
+              <div aria-hidden className="grain-overlay" />
+
+              <div style={{ position: 'relative', zIndex: 1 }}>
+                {/* Availability Badge */}
+                <div style={{
+                  display: 'inline-flex', alignItems: 'center', gap: 9,
+                  fontSize: 11, fontWeight: 600, color: '#22C55E',
+                  letterSpacing: '0.1em', marginBottom: 32,
+                }}>
+                  <span className="pulse" style={{
+                    width: 6, height: 6, borderRadius: '50%',
+                    background: '#22C55E', display: 'inline-block', flexShrink: 0,
+                  }} />
+                  Accepting projects now — spots are limited
                 </div>
 
-                <h2 className="heading-2" style={{ marginBottom: 16, fontSize: 'clamp(1.8rem, 4vw, 2.8rem)' }}>
-                  Ready to build something<br />
+                {/* Heading */}
+                <h2 style={{
+                  fontFamily: 'Syne, sans-serif', fontWeight: 800,
+                  fontSize: 'clamp(2.2rem, 6vw, 4.5rem)',
+                  letterSpacing: '-0.04em', lineHeight: 1.05,
+                  color: 'var(--text)', marginBottom: 20,
+                }}>
+                  Ready to build<br />
                   <span style={{
-                    background: 'linear-gradient(135deg, #6B3FFF, #A78BFA)',
+                    background: 'linear-gradient(135deg, var(--violet) 0%, var(--violet-soft) 100%)',
                     WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
-                  }}>genuinely great?</span>
+                  }}>something great?</span>
                 </h2>
 
-                <p style={{ color: 'var(--muted)', maxWidth: 420, margin: '0 auto 36px', fontSize: '0.95rem', lineHeight: 1.75 }}>
-                  We take a limited number of projects each month to ensure every client receives our full attention and premium quality.
+                {/* Description */}
+                <p style={{
+                  color: 'var(--muted)', maxWidth: 440,
+                  margin: '0 auto 36px',
+                  fontSize: 'clamp(0.9rem, 1.8vw, 1.05rem)', lineHeight: 1.75,
+                }}>
+                  We take a limited number of projects each month to ensure every
+                  client receives our full attention and premium quality.
                 </p>
 
-                <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap', marginBottom: 40 }}>
-                  <Link to="/contact" className="btn btn-primary" style={{
-                    padding: '16px 36px', fontSize: 15,
-                    boxShadow: '0 0 30px rgba(107,63,255,0.35), 0 4px 16px rgba(107,63,255,0.2)',
-                  }}>
+                {/* Buttons */}
+                <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap', marginBottom: 36, position: 'relative', zIndex: 2 }}>
+                  <Link to="/contact" className="btn btn-primary" style={{ padding: '15px 36px', fontSize: 14 }}>
                     Start a project
                   </Link>
                   <a href="https://calendly.com/palasync" target="_blank" rel="noreferrer"
-                    className="btn btn-secondary" style={{ padding: '15px 36px', fontSize: 15 }}>
+                    className="btn btn-secondary" style={{ padding: '14px 36px', fontSize: 14 }}
+                  >
                     Book a free call
                   </a>
                 </div>
 
-                <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '12px 28px' }}>
+                {/* Trust Tags */}
+                <div style={{ display: 'flex', justifyContent: 'center', gap: 'clamp(12px, 3vw, 24px)', flexWrap: 'wrap' }}>
                   {['🇮🇳 India-based', '⚡ Reply in 4 hrs', '✦ Custom-coded', '💰 From ₹9,999'].map(t => (
-                    <span key={t} style={{ fontSize: 12, color: 'var(--muted)', fontWeight: 500 }}>{t}</span>
+                    <span key={t} style={{ fontSize: 11, color: 'var(--muted-2)', fontWeight: 600 }}>{t}</span>
                   ))}
                 </div>
               </div>
@@ -972,57 +929,94 @@ export default function Home() {
       </section>
 
       <style>{`
+        /* ── Section utility classes ── */
+        .section-overline {
+          font-size: 11px; font-weight: 700; letter-spacing: 0.18em;
+          text-transform: uppercase; color: var(--violet);
+          margin-bottom: 12px; display: block;
+        }
+        .section-heading {
+          font-family: Syne, sans-serif; font-weight: 800;
+          font-size: clamp(1.9rem, 5vw, 3.5rem);
+          letter-spacing: -0.03em; color: var(--text); margin: 0;
+        }
+        .subtle-link {
+          font-size: 13px; color: var(--muted); font-weight: 600;
+          text-decoration: none; white-space: nowrap;
+          transition: color 200ms ease;
+        }
+        .subtle-link:hover { color: var(--violet); }
+
+        /* ── Hero labels: desktop only ── */
+        .hero-label-left, .hero-label-right { display: none !important; }
+        @media (min-width: 1000px) {
+          .hero-label-left, .hero-label-right { display: block !important; }
+        }
+
+        /* ── Service tag: visible ≥480px ── */
+        .svc-tag { display: none; }
+        @media (min-width: 480px) { .svc-tag { display: inline; } }
+
+        /* ── Service row hover ── */
+        .svc-row:hover .svc-title { color: var(--violet) !important; }
+        .svc-row--open .svc-title { color: var(--violet) !important; }
+
+        /* ── Work rows ── */
+        .work-row { transition: padding-left 320ms cubic-bezier(0.22, 1, 0.36, 1); }
+        /* On mobile: hide stat column */
+        .work-stat { display: none; }
+        @media (min-width: 520px) { .work-stat { display: block; } }
+
+        /* ── Manifesto grid ── */
+        .manifesto-grid { display: grid; grid-template-columns: 1fr; }
+        @media (min-width: 600px) { .manifesto-grid { grid-template-columns: 1fr 1fr !important; } }
+
+        /* ── Stats row ── */
+        .stat-row { grid-template-columns: 1fr 1fr; }
+        .stat-index { display: none; }
+        @media (min-width: 560px) {
+          .stat-row { grid-template-columns: 1fr 1.3fr 48px !important; }
+          .stat-index { display: block !important; }
+        }
+
+        /* ── Process: desktop zigzag vs mobile list ── */
+        .process-desktop { display: none; }
+        .process-mobile  { display: block; }
+        @media (min-width: 768px) {
+          .process-desktop { display: block; }
+          .process-mobile  { display: none; }
+        }
+
+        /* ── Scroll rail ── */
+        .scroll-rail::-webkit-scrollbar { display: none; }
+
+        /* ── Marquee ── */
         @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-        .marquee-inner {
-          display: inline-flex;
-          animation: marquee 28s linear infinite;
-          white-space: nowrap;
-        }
-        @media (prefers-reduced-motion: reduce) {
-          .marquee-inner { animation: none; }
-        }
+        .marquee-inner { display: inline-flex; animation: marquee 28s linear infinite; white-space: nowrap; }
+        @media (prefers-reduced-motion: reduce) { .marquee-inner { animation: none; } }
 
-        /* ── Stats row: 4 items in one flex row, clamp handles font scaling ── */
-        .stats-row {
-          display: flex;
-          gap: clamp(8px, 2vw, 20px);
-          align-items: stretch;
-        }
-        /* On very small phones: 2×2 grid */
-        @media (max-width: 479px) {
-          .stats-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-          }
-        }
-
-        /* ── Hero float cards: only show on wide screens ── */
-        .hero-float-card { display: none !important; }
-        @media (min-width: 1100px) {
-          .hero-float-card { display: block !important; }
-        }
-
-        /* ── Services / layout ── */
-        @media (min-width: 640px) {
-          .testimonials-grid { grid-template-columns: repeat(3, 1fr) !important; }
-          .belief-grid { grid-template-columns: repeat(2, 1fr) !important; }
-        }
-        @media (min-width: 900px) {
-          .services-main-grid { grid-template-columns: 1.4fr 1fr !important; }
-          .services-mini-grid { grid-template-columns: 1fr !important; }
-          .process-line { display: block; }
-        }
-        @media (max-width: 480px) {
-          .belief-grid { grid-template-columns: 1fr !important; }
-        }
-
+        /* ── Pulse ── */
         @keyframes pulse-ring {
-          0%   { box-shadow: 0 0 0 0   rgba(34,197,94,0.4); }
+          0%   { box-shadow: 0 0 0 0   rgba(34,197,94,0.5); }
           70%  { box-shadow: 0 0 0 8px rgba(34,197,94,0);   }
           100% { box-shadow: 0 0 0 0   rgba(34,197,94,0);   }
         }
         .pulse { animation: pulse-ring 2s ease-out infinite; }
+
+        /* ── Grain ── */
+        .grain-overlay {
+          position: absolute; inset: 0; pointer-events: none; z-index: 0;
+          background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.06'/%3E%3C/svg%3E");
+          opacity: 0.5;
+        }
+
+        /* ── PWA: hide scrollbars globally on scroll rails ── */
+        div::-webkit-scrollbar { display: none; }
+
+        /* ── Mobile: no title overflow on work rows ── */
+        @media (max-width: 519px) {
+          .work-row { grid-template-columns: 36px 1fr !important; }
+        }
       `}</style>
     </>
   )
