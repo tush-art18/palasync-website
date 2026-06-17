@@ -16,7 +16,7 @@ const COMPANY = [
 ]
 
 const SOCIAL = [
-  { label: 'Instagram', href: 'https://instagram.com/palasync' },
+  { label: 'Instagram', href: 'https://instagram.com/pala.sync' },
   { label: 'LinkedIn',  href: 'https://linkedin.com/company/palasync' },
   { label: 'X / Twitter', href: 'https://x.com/palasync' },
 ]
@@ -64,7 +64,7 @@ export default function Footer() {
           style={{
             fontFamily: 'Syne, sans-serif',
             fontWeight: 800,
-            fontSize: 'clamp(3.5rem, 12vw, 9rem)',
+            fontSize: 'clamp(2rem, 12vw, 9rem)',
             letterSpacing: '-0.04em',
             lineHeight: 1,
             color: 'rgba(255,255,255,0.04)',
@@ -90,19 +90,17 @@ export default function Footer() {
         >
           {/* Brand column */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-            <Link to="/" aria-label="PalaSync home">
-              {/* Text logo for dark footer */}
-              <span
+            <Link to="/" aria-label="PalaSync home" style={{ display: 'inline-block' }}>
+              <img
+                src="/color variant.png"
+                alt="PalaSync"
                 style={{
-                  fontFamily: 'Syne, sans-serif',
-                  fontWeight: 800,
-                  fontSize: '1.3rem',
-                  letterSpacing: '-0.02em',
-                  color: '#F0F0FF',
+                  height: 28,
+                  width: 'auto',
+                  display: 'block',
+                  objectFit: 'contain',
                 }}
-              >
-                PalaSync<span style={{ color: 'var(--violet)' }}>.</span>
-              </span>
+              />
             </Link>
             <p
               style={{
@@ -237,7 +235,7 @@ export default function Footer() {
               Get in touch
             </div>
             <a
-              href="mailto:hello@palasync.com"
+              href="mailto:palasync2@gmail.com"
               style={{
                 display: 'block',
                 fontSize: '0.875rem',
@@ -250,7 +248,7 @@ export default function Footer() {
               onMouseEnter={e => (e.currentTarget.style.color = '#F0F0FF')}
               onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.45)')}
             >
-              hello@palasync.com
+              palasync2@gmail.com
             </a>
 
             {/* Social links */}
