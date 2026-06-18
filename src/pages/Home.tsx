@@ -39,13 +39,13 @@ const SERVICES = [
 ]
 
 const WORK = [
-  { n: '01', name: 'Brown Beans Coffee', cat: 'E-commerce · Branding',    stat: '+240% orders',       year: '2025', desc: 'Full brand identity and e-commerce conversion overhaul',           href: '/work/brown-beans-coffee', accent: '#C8813A' },
-  { n: '02', name: 'WoW Saplings',       cat: 'SaaS Dashboard · Web App', stat: '3× traffic / 30d',  year: '2025', desc: 'Interactive EdTech portal with real-time class analytics',          href: '/work/wow-saplings',       accent: '#22C55E' },
-  { n: '03', name: 'Client Portal Pro',  cat: 'Full-Stack Web App',       stat: '98 Lighthouse',      year: '2024', desc: 'Secure B2B collaboration platform with role-based access',          href: '/work/client-portal-pro',  accent: '#8B65FF' },
+  { n: '01', name: 'WoW Saplings',       cat: 'SaaS Dashboard · Web App', stat: '3× traffic / 30d',  year: '2026', desc: 'Interactive EdTech portal with real-time class analytics',          href: '/work/wow-saplings',       accent: '#22C55E' },
+  { n: '02', name: 'Client Portal Pro',  cat: 'Full-Stack Web App',       stat: '98 Lighthouse',      year: '2026', desc: 'Secure B2B collaboration platform with role-based access',          href: '/work/client-portal-pro',  accent: '#8B65FF' },
+  { n: '03', name: 'Brown Beans Coffee', cat: 'E-commerce · Branding',    stat: '+240% orders',       year: '2025', desc: 'Full brand identity and e-commerce conversion overhaul',           href: '/work/brown-beans-coffee', accent: '#C8813A' },
 ]
 
 const STATS = [
-  { value: '50+',    label: 'Projects Delivered', sub: 'since 2022' },
+  { value: '10+',    label: 'Projects Delivered', sub: 'since 2025' },
   { value: '3 wks',  label: 'Average Delivery',   sub: 'fast without cutting corners' },
   { value: '100%',   label: 'Client Satisfaction', sub: 'zero refund requests' },
   { value: '₹9,999', label: 'Starting Price',      sub: 'world-class quality, India rates' },
@@ -79,11 +79,21 @@ export default function Home() {
     return () => clearInterval(interval)
   }, [])
 
+  const scroll = (direction: 'left' | 'right') => {
+    if (scrollRailRef.current) {
+      const scrollAmount = 380 // card width + gap
+      scrollRailRef.current.scrollBy({
+        left: direction === 'left' ? -scrollAmount : scrollAmount,
+        behavior: 'smooth',
+      })
+    }
+  }
+
   return (
     <>
       <Helmet>
         <title>PalaSync — Premium Web Design & Development India</title>
-        <meta name="description" content="PalaSync builds premium custom websites, SaaS platforms, and brand identities for Indian businesses. Starting ₹9,999. No templates, ever." />
+        <meta name="description" content="PalaSync builds premium custom websites, E-commerce and SaaS platforms, and brand identities for your businesses. No templates, ever." />
       </Helmet>
 
       {/* ════════════════════════════════════════════════════════
@@ -222,8 +232,8 @@ export default function Home() {
               fontSize: 'clamp(0.9rem, 2.5vw, 1rem)', lineHeight: 1.8,
               margin: 0,
             }}>
-              Premium custom websites, SaaS platforms, and brand identities for
-              Indian businesses that refuse to look ordinary.
+              Premium custom websites, E-commerce and SaaS platforms, and brand identities for
+              your businesses that refuse to look ordinary.
             </p>
             <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
               <Link to="/contact" className="btn btn-acid" style={{ fontSize: 14 }}>
@@ -744,21 +754,45 @@ export default function Home() {
       }}>
         <div className="container" style={{ marginBottom: 44 }}>
           <Reveal>
-            <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', flexWrap: 'wrap', gap: 14 }}>
+            <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', flexWrap: 'wrap', gap: 24 }}>
               <div>
                 <p className="section-overline">Reviews</p>
                 <h2 className="section-heading">
-                  Client Voices<span style={{ color: 'var(--red)' }}>.</span>
+                  Client Voices<span style={{ color: 'var(--violet)' }}>.</span>
                 </h2>
               </div>
-              <p style={{ fontSize: '0.875rem', color: 'var(--muted)', maxWidth: 260, lineHeight: 1.65, margin: 0 }}>
-                What happens in the months after we deliver.
-              </p>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 24, flexWrap: 'wrap' }}>
+                <p style={{ fontSize: '0.875rem', color: 'var(--muted)', maxWidth: 260, lineHeight: 1.65, margin: 0 }}>
+                  What happens in the months after we deliver.
+                </p>
+                <div className="arrow-btn-container" style={{ display: 'flex', gap: 8 }}>
+                  <button
+                    onClick={() => scroll('left')}
+                    aria-label="Previous testimonials"
+                    className="arrow-btn"
+                  >
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                      <line x1="19" y1="12" x2="5" y2="12" />
+                      <polyline points="12 19 5 12 12 5" />
+                    </svg>
+                  </button>
+                  <button
+                    onClick={() => scroll('right')}
+                    aria-label="Next testimonials"
+                    className="arrow-btn"
+                  >
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                      <line x1="5" y1="12" x2="19" y2="12" />
+                      <polyline points="12 5 19 12 12 19" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
             </div>
           </Reveal>
         </div>
 
-        {/* Scroll rail — iOS momentum + snap */}
+        {/* Scroll rail — iOS momentum + snap with scroll padding to prevent margin cutoff */}
         <div
           ref={scrollRailRef}
           className="scroll-rail"
@@ -766,6 +800,7 @@ export default function Home() {
             display: 'flex', gap: 16,
             paddingLeft:  'max(20px, calc((100vw - 1100px) / 2 + 40px))',
             paddingRight: 'max(20px, calc((100vw - 1100px) / 2 + 40px))',
+            scrollPaddingLeft: 'max(20px, calc((100vw - 1100px) / 2 + 40px))',
             paddingBottom: 8,
           }}
         >
@@ -776,9 +811,10 @@ export default function Home() {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: i * 0.09 }}
+              whileHover={{ y: -6, borderColor: t.accent, boxShadow: '0 10px 30px -10px rgba(0,0,0,0.1)' }}
               style={{
                 flexShrink: 0,
-                width: 'clamp(268px, 34vw, 360px)',
+                width: 'clamp(280px, 34vw, 360px)',
                 scrollSnapAlign: 'start',
                 background: 'var(--surface)',
                 border: '1px solid var(--border)',
@@ -786,6 +822,7 @@ export default function Home() {
                 padding: 'clamp(24px, 4vw, 36px)',
                 display: 'flex', flexDirection: 'column',
                 position: 'relative', overflow: 'hidden',
+                transition: 'border-color 200ms ease, box-shadow 200ms ease',
               }}
             >
               <div style={{
@@ -796,7 +833,7 @@ export default function Home() {
                 fontFamily: 'Georgia, serif', fontSize: 76,
                 color: `${t.accent}18`, lineHeight: 0.7,
                 marginBottom: 8, fontWeight: 700, userSelect: 'none',
-              }}>"</div>
+              }}>“</div>
               <div style={{ display: 'flex', gap: 3, marginBottom: 14 }}>
                 {[...Array(5)].map((_, j) => (
                   <span key={j} style={{ color: '#F59E0B', fontSize: 12 }}>★</span>
@@ -998,6 +1035,33 @@ export default function Home() {
 
         /* ── Scroll rail ── */
         .scroll-rail::-webkit-scrollbar { display: none; }
+
+        /* ── Testimonials Arrow buttons ── */
+        .arrow-btn-container {
+          display: flex;
+          gap: 8px;
+        }
+        .arrow-btn {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 42px;
+          height: 42px;
+          border-radius: 50%;
+          border: 1.5px solid var(--border-2);
+          background: transparent;
+          color: var(--muted);
+          cursor: pointer;
+          transition: border-color 160ms ease, background 160ms ease, color 160ms ease;
+        }
+        .arrow-btn:hover {
+          border-color: var(--violet);
+          background: var(--violet-mute);
+          color: var(--violet);
+        }
+        @media (max-width: 600px) {
+          .arrow-btn-container { display: none !important; }
+        }
 
         /* ── Marquee ── */
         @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }

@@ -3,6 +3,7 @@ import { HelmetProvider } from 'react-helmet-async'
 import { AnimatePresence } from 'framer-motion'
 
 // Layout
+import ScrollToTop from './components/layout/ScrollToTop'
 import Navbar from './components/layout/Navbar'
 import Footer from './components/layout/Footer'
 import WhatsAppButton from './components/layout/WhatsAppButton'
@@ -24,6 +25,7 @@ export default function App() {
   return (
     <HelmetProvider>
       <BrowserRouter>
+        <ScrollToTop />
         <CustomCursor />
         <Navbar />
         <div className="flex flex-col min-h-screen">
