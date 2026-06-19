@@ -299,7 +299,7 @@ export default function Home() {
             <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: 16, flexWrap: 'wrap' }}>
               <div>
                 <p className="section-overline">Our Expertise</p>
-                <h2 className="section-heading" style={{ fontFamily: 'Inter, sans-serif' }}>
+                <h2 className="section-heading" style={{ fontFamily: 'Syne, sans-serif' }}>
                   Services<span style={{ color: 'var(--violet)' }}>.</span>
                 </h2>
               </div>
@@ -430,7 +430,7 @@ export default function Home() {
             <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: 16, flexWrap: 'wrap' }}>
               <div>
                 <p className="section-overline">Portfolio</p>
-                <h2 className="section-heading">
+                <h2 className="section-heading" style={{ fontFamily: 'Syne, sans-serif' }}>
                   Selected Work<span style={{ color: 'var(--red)' }}>.</span>
                 </h2>
               </div>
@@ -623,7 +623,7 @@ export default function Home() {
               }}>
                 <div style={{
                   fontFamily: 'Syne, sans-serif', fontWeight: 800,
-                  fontSize: 'clamp(2.2rem, 6.5vw, 5rem)',
+                  fontSize: 'clamp(2rem, 6vw, 4rem)',
                   letterSpacing: '-0.045em', color: 'var(--text)', lineHeight: 1,
                 }}>{s.value}</div>
                 <div>
@@ -649,8 +649,12 @@ export default function Home() {
         <div className="container">
           <Reveal style={{ marginBottom: 64 }}>
             <p className="section-overline">How we work</p>
-            <h2 className="section-heading">
-              Our process<span style={{ color: 'var(--red)' }}>.</span>
+            <h2 style={{ fontFamily: 'Syne, sans-serif',
+                        fontSize: 'clamp(1.9rem, 5vw, 3.5rem)',
+                        letterSpacing: '-0.03em',
+                        fontWeight: '800',
+            }}>
+              Our Process<span style={{ color: 'var(--red)', }}>.</span>
             </h2>
           </Reveal>
 
@@ -759,7 +763,7 @@ export default function Home() {
             <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', flexWrap: 'wrap', gap: 24 }}>
               <div>
                 <p className="section-overline">Reviews</p>
-                <h2 className="section-heading">
+                <h2 className="section-heading" style={{ fontFamily: 'Syne, sans-serif' }}>
                   Client Voices<span style={{ color: 'var(--violet)' }}>.</span>
                 </h2>
               </div>
