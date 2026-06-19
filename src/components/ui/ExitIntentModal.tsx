@@ -127,11 +127,11 @@ export default function ExitIntentModal() {
                 </div>
 
                 <h3 style={{
-                  fontFamily: 'Syne, sans-serif',
+                  fontFamily: 'Inter, sans-serif',
                   fontWeight: 800,
                   fontSize: 'clamp(1.4rem, 3vw, 1.8rem)',
-                  letterSpacing: '-0.02em',
-                  lineHeight: 1.2,
+                  letterSpacing: '-0.035em',
+                  lineHeight: 1.25,
                   marginBottom: 12,
                   color: 'var(--text)',
                 }}>
@@ -201,9 +201,10 @@ export default function ExitIntentModal() {
                   🎉
                 </div>
                 <h3 style={{
-                  fontFamily: 'Syne, sans-serif',
+                  fontFamily: 'Inter, sans-serif',
                   fontWeight: 800,
                   fontSize: '1.5rem',
+                  letterSpacing: '-0.03em',
                   marginBottom: 8,
                 }}>
                   Audit Claimed!

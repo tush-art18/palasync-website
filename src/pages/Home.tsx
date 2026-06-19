@@ -179,7 +179,7 @@ export default function Home() {
               animate={{ y: 0 }}
               transition={{ duration: 0.95, ease: [0.22, 1, 0.36, 1] }}
               style={{
-                fontFamily: 'Syne, sans-serif', fontWeight: 800,
+                fontFamily: 'Inter, sans-serif', fontWeight: 800,
                 fontSize: 'clamp(2.6rem, 8vw, 7rem)',
                 lineHeight: 1.0, letterSpacing: '-0.035em',
                 color: 'var(--text-accent)', margin: 0,
@@ -204,6 +204,8 @@ export default function Home() {
                     transition={{ duration: 0.48, ease: [0.22, 1, 0.36, 1] }}
                     style={{
                       display: 'inline-block',
+                      fontFamily: "'Syne', sans-serif",
+                      fontWeight: 800,
                       background: 'linear-gradient(135deg, #6B3FFF 0%, #A78BFA 60%, #8B65FF 100%)',
                       WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
                       lineHeight: '1em',
@@ -297,8 +299,8 @@ export default function Home() {
             <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: 16, flexWrap: 'wrap' }}>
               <div>
                 <p className="section-overline">Our Expertise</p>
-                <h2 className="section-heading">
-                  Services<span style={{ color: 'var(--red)' }}>.</span>
+                <h2 className="section-heading" style={{ fontFamily: 'Inter, sans-serif' }}>
+                  Services<span style={{ color: 'var(--violet)' }}>.</span>
                 </h2>
               </div>
               <Link to="/services" className="subtle-link">Full details & pricing →</Link>
@@ -542,9 +544,9 @@ export default function Home() {
                 marginBottom: 28,
               }}>Our Belief</p>
               <p style={{
-                fontFamily: 'Syne, sans-serif', fontWeight: 800,
-                fontSize: 'clamp(1.4rem, 3.5vw, 2.6rem)',
-                lineHeight: 1.18, letterSpacing: '-0.025em',
+                fontFamily: 'Inter, sans-serif', fontWeight: 800,
+                fontSize: 'clamp(1.3rem, 3.2vw, 2.4rem)',
+                lineHeight: 1.25, letterSpacing: '-0.03em',
                 color: '#fff', margin: 0,
               }}>
                 A great website is not designed in an afternoon.
@@ -562,9 +564,9 @@ export default function Home() {
           }}>
             <Reveal delay={0.15}>
               <p style={{
-                fontFamily: 'Syne, sans-serif', fontWeight: 800,
-                fontSize: 'clamp(1.4rem, 3.5vw, 2.6rem)',
-                lineHeight: 1.18, letterSpacing: '-0.025em',
+                fontFamily: 'Inter, sans-serif', fontWeight: 800,
+                fontSize: 'clamp(1.3rem, 3.2vw, 2.4rem)',
+                lineHeight: 1.25, letterSpacing: '-0.03em',
                 color: 'var(--text-accent)', marginBottom: 40,
               }}>
                 It's researched, debated,{' '}
@@ -918,7 +920,7 @@ export default function Home() {
 
                 {/* Heading */}
                 <h2 style={{
-                  fontFamily: 'Syne, sans-serif', fontWeight: 800,
+                  fontFamily: 'Inter, sans-serif', fontWeight: 800,
                   fontSize: 'clamp(2.2rem, 6vw, 4.5rem)',
                   letterSpacing: '-0.04em', lineHeight: 1.05,
                   color: 'var(--text)', marginBottom: 20,
@@ -982,9 +984,9 @@ export default function Home() {
           margin-bottom: 12px; display: block;
         }
         .section-heading {
-          font-family: Syne, sans-serif; font-weight: 800;
+          font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; font-weight: 850;
           font-size: clamp(1.9rem, 5vw, 3.5rem);
-          letter-spacing: -0.03em; color: var(--text); margin: 0;
+          letter-spacing: -0.035em; color: var(--text); margin: 0;
         }
         .subtle-link {
           font-size: 13px; color: var(--muted); font-weight: 600;
