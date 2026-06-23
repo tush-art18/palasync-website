@@ -8,7 +8,7 @@ const SERVICES_DATA = {
   'web-design': {
     title: 'Web Design',
     subtitle: 'Custom layouts engineered for maximum conversion. Zero generic templates.',
-    price: '₹14,999',
+    price: '₹4,999',
     timeline: '1-2 Weeks',
     icon: '✦',
     accent: '#6B3FFF',
@@ -40,7 +40,7 @@ const SERVICES_DATA = {
   'web-development': {
     title: 'Web Development',
     subtitle: 'Clean, type-safe code using modern frameworks. Fast, robust, and search-optimized.',
-    price: '₹24,999',
+    price: '₹9,999',
     timeline: '2-3 Weeks',
     icon: '⚡',
     accent: '#8B65FF',
