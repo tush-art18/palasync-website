@@ -95,7 +95,7 @@ export default function Footer() {
                 src="/Submark icon.png"
                 alt="PalaSync"
                 style={{
-                  height: 32,
+                  height: 40,
                   width: 'auto',
                   display: 'block',
                   objectFit: 'contain',
