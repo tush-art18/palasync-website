@@ -4,26 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Helmet } from 'react-helmet-async'
 
 const PROJECTS = [
-  {
-    slug: 'brown-beans-coffee',
-    name: 'Brown Beans Coffee',
-    category: 'E-commerce',
-    catSlug: 'ecommerce',
-    desc: 'Custom roastery online store and brand identity.',
-    stat: '+240% orders',
-    year: '2025',
-    accent: '#C8813A',
-    bgGlow: 'rgba(200, 129, 58, 0.08)',
-    clientBg: 'A high-end coffee roaster from Chikmagalur selling single-origin coffee directly to consumers across India.',
-    problem: 'They were selling through multi-brand market pages where they had zero design control, high commission costs, and flat customer engagement.',
-    solution: 'We built a high-speed custom Shopify storefront using React, featuring interactive flavor wheel charts and a seamless 2-tap checkout system.',
-    tech: ['React', 'Tailwind CSS v4', 'Framer Motion', 'Shopify API', 'Sanity CMS'],
-    testimonial: {
-      q: 'PalaSync gave our coffee the digital home it deserved. Our orders tripled in the second month after launching.',
-      author: 'Vikram R.',
-      role: 'Founder, Brown Beans Coffee'
-    }
-  },
+
   {
     slug: 'wow-saplings',
     name: 'WoW Saplings',
@@ -63,7 +44,27 @@ const PROJECTS = [
       author: 'David L.',
       role: 'Partner, Advisory Capital'
     }
-  }
+  },
+  {
+    slug: 'brown-beans-coffee',
+    name: 'Brown Beans Coffee',
+    category: 'E-commerce',
+    catSlug: 'ecommerce',
+    desc: 'Custom roastery online store and brand identity.',
+    stat: '+240% orders',
+    year: '2025',
+    accent: '#C8813A',
+    bgGlow: 'rgba(200, 129, 58, 0.08)',
+    clientBg: 'A high-end coffee roaster from Chikmagalur selling single-origin coffee directly to consumers across India.',
+    problem: 'They were selling through multi-brand market pages where they had zero design control, high commission costs, and flat customer engagement.',
+    solution: 'We built a high-speed custom Shopify storefront using React, featuring interactive flavor wheel charts and a seamless 2-tap checkout system.',
+    tech: ['React', 'Tailwind CSS v4', 'Framer Motion', 'Shopify API', 'Sanity CMS'],
+    testimonial: {
+      q: 'PalaSync gave our coffee the digital home it deserved. Our orders tripled in the second month after launching.',
+      author: 'Vikram R.',
+      role: 'Founder, Brown Beans Coffee'
+    }
+  },
 ]
 
 type Project = typeof PROJECTS[number]
