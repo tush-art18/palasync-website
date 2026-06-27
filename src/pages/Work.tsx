@@ -60,7 +60,7 @@ const PROJECTS = [
     problem: 'Standard e-commerce builders and templates introduce heavy script overhead, rigid layout constraints, and slow page loading, which hurts conversion rates.',
     solution: 'We built a custom headless storefront using React, Tailwind CSS, and Framer Motion. It demonstrates instant route transitions, flavor profile selectors, and optimized checkouts.',
     tech: ['React', 'Tailwind CSS v4', 'Framer Motion', 'Shopify API', 'Sanity CMS'],
-    liveUrl: 'https://brownbeans.vercel.app',
+    liveUrl: 'https://brown-beans-i89v.vercel.app/',
     testimonial: {
       q: 'We engineered this demo to prove that custom React-based storefronts outperform standard templates. It serves as our live benchmark for speed and premium design.',
       author: 'Palase',
