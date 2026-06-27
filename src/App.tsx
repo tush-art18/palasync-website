@@ -8,6 +8,8 @@ import Navbar from './components/layout/Navbar'
 import Footer from './components/layout/Footer'
 import WhatsAppButton from './components/layout/WhatsAppButton'
 import CustomCursor from './components/layout/CustomCursor'
+
+// UI
 import ExitIntentModal from './components/ui/ExitIntentModal'
 
 // Pages

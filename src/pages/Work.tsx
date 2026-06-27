@@ -4,7 +4,6 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Helmet } from 'react-helmet-async'
 
 const PROJECTS = [
-
   {
     slug: 'wow-saplings',
     name: 'WoW Saplings',
@@ -19,6 +18,7 @@ const PROJECTS = [
     problem: 'Distributing teacher training files and curriculum materials via email attachments and Google Drive was slow and unorganized.',
     solution: 'A secure, responsive portal dashboard built in React + TypeScript where teachers access assets, track lessons, and submit reviews.',
     tech: ['React', 'TypeScript', 'Tailwind CSS', 'PostgreSQL', 'Node.js'],
+    liveUrl: 'https://wowsaplingsschool.in',
     testimonial: {
       q: 'Our teachers love the dashboard interface. Materials distribution is now completely automated, saving us hours of manual admin.',
       author: 'Yasmeen S.',
@@ -39,6 +39,7 @@ const PROJECTS = [
     problem: 'Exchanging sensitive legal files and financial data via scattered email threads caused version confusion and security risks.',
     solution: 'A custom, clean portal application with file encryption, real-time sync comments, and clean layout task tracking.',
     tech: ['React', 'Supabase', 'Tailwind CSS v4', 'TypeScript', 'Crypto.js'],
+    liveUrl: 'https://netresh-satpute.vercel.app/',
     testimonial: {
       q: 'Our enterprise clients regularly praise the custom portal. It proves our technical capability during onboarding.',
       author: 'David L.',
@@ -47,24 +48,25 @@ const PROJECTS = [
   },
   {
     slug: 'brown-beans-coffee',
-    name: 'Brown Beans Coffee',
-    category: 'E-commerce',
+    name: 'Brown Beans Coffee (Demo)',
+    category: 'E-commerce Demo',
     catSlug: 'ecommerce',
-    desc: 'Custom roastery online store and brand identity.',
-    stat: '+240% orders',
+    desc: 'High-performance headless e-commerce store benchmark.',
+    stat: '99 Speed',
     year: '2025',
     accent: '#C8813A',
     bgGlow: 'rgba(200, 129, 58, 0.08)',
-    clientBg: 'A high-end coffee roaster from Chikmagalur selling single-origin coffee directly to consumers across India.',
-    problem: 'They were selling through multi-brand market pages where they had zero design control, high commission costs, and flat customer engagement.',
-    solution: 'We built a high-speed custom Shopify storefront using React, featuring interactive flavor wheel charts and a seamless 2-tap checkout system.',
+    clientBg: 'A high-fidelity headless commerce demo designed and engineered by PalaSync to showcase custom Shopify API integrations and animation architectures.',
+    problem: 'Standard e-commerce builders and templates introduce heavy script overhead, rigid layout constraints, and slow page loading, which hurts conversion rates.',
+    solution: 'We built a custom headless storefront using React, Tailwind CSS, and Framer Motion. It demonstrates instant route transitions, flavor profile selectors, and optimized checkouts.',
     tech: ['React', 'Tailwind CSS v4', 'Framer Motion', 'Shopify API', 'Sanity CMS'],
+    liveUrl: 'https://brownbeans.vercel.app',
     testimonial: {
-      q: 'PalaSync gave our coffee the digital home it deserved. Our orders tripled in the second month after launching.',
-      author: 'Vikram R.',
-      role: 'Founder, Brown Beans Coffee'
+      q: 'We engineered this demo to prove that custom React-based storefronts outperform standard templates. It serves as our live benchmark for speed and premium design.',
+      author: 'Palase',
+      role: 'Founder, PalaSync'
     }
-  },
+  }
 ]
 
 type Project = typeof PROJECTS[number]
@@ -370,7 +372,7 @@ export default function Work() {
                     {/* Live project CTA */}
                     <div>
                       <a
-                        href="https://wowsaplingsschool.in"
+                        href={project.liveUrl}
                         target="_blank"
                         rel="noreferrer"
                         className="btn btn-primary"

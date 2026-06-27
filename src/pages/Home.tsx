@@ -41,14 +41,14 @@ const SERVICES = [
 const WORK = [
   { n: '01', name: 'WoW Saplings',       cat: 'SaaS Dashboard · Web App', stat: '3× traffic / 30d',  year: '2026', desc: 'Interactive EdTech portal with real-time class analytics',          href: '/work/wow-saplings',       accent: '#22C55E' },
   { n: '02', name: 'Client Portal Pro',  cat: 'Full-Stack Web App',       stat: '98 Lighthouse',      year: '2026', desc: 'Secure B2B collaboration platform with role-based access',          href: '/work/client-portal-pro',  accent: '#8B65FF' },
-  { n: '03', name: 'Brown Beans Coffee', cat: 'E-commerce · Branding',    stat: '+240% orders',       year: '2025', desc: 'Full brand identity and e-commerce conversion overhaul',           href: '/work/brown-beans-coffee', accent: '#C8813A' },
+  { n: '03', name: 'Brown Beans Coffee (Demo)', cat: 'E-commerce Demo',    stat: '99 Speed',           year: '2025', desc: 'High-performance headless e-commerce store and brand benchmark',   href: '/work/brown-beans-coffee', accent: '#C8813A' },
 ]
 
 const STATS = [
   { value: '10+',    label: 'Projects Delivered', sub: 'since 2025' },
   { value: '3 wks',  label: 'Average Delivery',   sub: 'fast without cutting corners' },
   { value: '100%',   label: 'Client Satisfaction', sub: 'zero refund requests' },
-  { value: '₹9,999', label: 'Starting Price',      sub: 'world-class quality, India rates' },
+  { value: '₹9,999', label: 'Web Developing Starting Price',      sub: 'world-class quality, India rates' },
 ]
 
 const PROCESS = [
