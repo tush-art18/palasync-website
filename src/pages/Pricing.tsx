@@ -6,7 +6,7 @@ import { Helmet } from 'react-helmet-async'
 const PLANS = [
   {
     name: 'Starter',
-    price: '₹7,999',
+    price: '₹9,999',
     desc: 'Perfect for local businesses, portfolios, and landing pages needing a high-end online presence.',
     features: [
       'Single-page layout / Landing Page',
@@ -28,7 +28,7 @@ const PLANS = [
   },
   {
     name: 'Growth',
-    price: '₹19,999',
+    price: '₹24,999',
     desc: 'Our most popular plan. Ideal for growing brands and startups needing a blog or multi-page product showcase.',
     features: [
       'Up to 5 custom layout pages',

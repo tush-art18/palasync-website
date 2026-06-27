@@ -48,7 +48,7 @@ const STATS = [
   { value: '10+',    label: 'Projects Delivered', sub: 'since 2025' },
   { value: '3 wks',  label: 'Average Delivery',   sub: 'fast without cutting corners' },
   { value: '100%',   label: 'Client Satisfaction', sub: 'zero refund requests' },
-  { value: '₹9,999', label: 'Web Developing Starting Price',      sub: 'world-class quality, India rates' },
+  { value: '₹9,999', label: 'Starting Price',      sub: 'world-class quality, India rates' },
 ]
 
 const PROCESS = [

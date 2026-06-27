@@ -72,7 +72,7 @@ const SERVICES_DATA = {
   'saas-products': {
     title: 'SaaS Products',
     subtitle: 'Full-stack application development. From database architecture to custom client portals.',
-    price: '₹59,999',
+    price: '₹49,999+',
     timeline: '4-6 Weeks',
     icon: '◆',
     accent: '#22C55E',
