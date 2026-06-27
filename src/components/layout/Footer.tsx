@@ -92,10 +92,10 @@ export default function Footer() {
           <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
             <Link to="/" aria-label="PalaSync home" style={{ display: 'inline-block' }}>
               <img
-                src="/color variant.png"
+                src="/Submark icon.png"
                 alt="PalaSync"
                 style={{
-                  height: 32,
+                  height: 40,
                   width: 'auto',
                   display: 'block',
                   objectFit: 'contain',
