@@ -1,5 +1,5 @@
 export default function WhatsAppButton() {
-  const whatsappUrl = "https://wa.me/91XXXXXXXXXX?text=Hi%20PalaSync%2C%20I%20would%20like%20to%20discuss%20a%20project."
+  const whatsappUrl = "https://wa.me/919579814142?text=Hi%20PalaSync%2C%20I%20would%20like%20to%20discuss%20a%20project."
 
   return (
     <a 

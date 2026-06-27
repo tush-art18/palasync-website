@@ -40,8 +40,8 @@ const PROJECTS = [
     tech: ['React', 'TypeScript', 'Tailwind CSS', 'PostgreSQL', 'Node.js'],
     testimonial: {
       q: 'Our teachers love the dashboard interface. Materials distribution is now completely automated, saving us hours of manual admin.',
-      author: 'Priya K.',
-      role: 'Operations Director, WoW Saplings'
+      author: 'Yasmeen S.',
+      role: 'Founder, WoW Saplings'
     }
   },
   {
@@ -369,7 +369,7 @@ export default function Work() {
                     {/* Live project CTA */}
                     <div>
                       <a
-                        href="https://palasync.com"
+                        href="https://wowsaplingsschool.in"
                         target="_blank"
                         rel="noreferrer"
                         className="btn btn-primary"
