@@ -5,3 +5,5 @@ this website is developed usings React.js
 # Technologies Used 
  - React.js
  - tailwindcss
+ - HTML
+ - CSS
