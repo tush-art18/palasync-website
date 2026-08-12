@@ -32,10 +32,10 @@ function Reveal({
 const HERO_WORDS = ['Convert.', 'Perform.', 'Impress.', 'Last.']
 
 const SERVICES = [
-  { n: '01', title: 'Web Design',      tag: 'UI/UX',       desc: 'Custom Figma prototypes tailored for your audience. Layouts engineered to guide visitors toward conversion — not just look good.', href: '/services/web-design',      accent: '#6B3FFF' },
-  { n: '02', title: 'Web Development', tag: 'React · TS',  desc: 'React, TypeScript, 98+ Lighthouse. Clean type-safe code that loads instantly and provides app-like speed with zero template bloat.', href: '/services/web-development', accent: '#8B65FF' },
-  { n: '03', title: 'SaaS Products',   tag: 'Full-Stack',  desc: 'Full-stack apps with dashboards, secure login, database architecture, and Stripe payment integration — built end-to-end.', href: '/services/saas-products',   accent: '#22C55E' },
-  { n: '04', title: 'Branding',        tag: 'Identity',    desc: 'Custom logos, typography pairings, and a complete digital stylebook to make your brand globally recognizable and consistent.', href: '/services/branding',        accent: '#C8FF00' },
+  { n: '01', title: 'Starter Website',      tag: 'Get Online',       desc: 'A clean, professional website for businesses that need a strong online presence without unnecessary complexity.', href: '/services/web-design',      accent: '#6B3FFF' },
+  { n: '02', title: 'Business Website', tag: 'Build creadibility',  desc: 'A polished, custom website that showcases your brand, services, work and builds trust with potential customers.', href: '/services/web-development', accent: '#8B65FF' },
+  { n: '03', title: 'Growth Website',   tag: 'Turn attention into action',  desc: 'A strategy-led website designed to turn visitors from Google, Instagram and ads into enquiries, bookings or customers.', href: '/services/saas-products',   accent: '#22C55E' },
+  { n: '04', title: 'Custom Web App',        tag: 'Custom Software',    desc: 'Custom software built around your business workflow - from dashboards and portals to automation and SaaS platforms.', href: '/services/branding',        accent: '#C8FF00' },
 ]
 
 const WORK = [

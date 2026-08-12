@@ -5,10 +5,10 @@ import { Helmet } from 'react-helmet-async'
 
 // Core services data structure
 const SERVICES_DATA = {
-  'web-design': {
-    title: 'Web Design',
-    subtitle: 'Custom layouts engineered for maximum conversion. Zero generic templates.',
-    price: '₹4,999',
+  'starter-website': {
+    title: 'Starter Website',
+    subtitle: 'A simple, professional website to establish your online presence.',
+    price: '₹XX,XXX',
     timeline: '1-2 Weeks',
     icon: '✦',
     accent: '#6B3FFF',
@@ -141,13 +141,13 @@ export default function Services() {
   const { slug } = useParams<{ slug?: string }>()
   const navigate = useNavigate()
   
-  // Set current service based on URL slug or fall back to 'web-design'
-  const activeKey: ServiceKey = (slug && SERVICES_DATA[slug as ServiceKey]) ? (slug as ServiceKey) : 'web-design'
+  // Set current service based on URL slug or fall back to 'starter-website'
+  const activeKey: ServiceKey = (slug && SERVICES_DATA[slug as ServiceKey]) ? (slug as ServiceKey) : 'starter-website'
   const service = SERVICES_DATA[activeKey]
 
   const [activeFaq, setActiveFaq] = useState<number | null>(null)
 
-  // Redirect if visiting general /services to default 'web-design' to keep a premium detailed view visible,
+  // Redirect if visiting general /services to default 'starter-website' to keep a premium detailed view visible,
   // or we can render a beautiful index selection. Let's make it so they can easily toggle services inside the page.
   const handleSelectService = (key: ServiceKey) => {
     navigate(`/services/${key}`)
