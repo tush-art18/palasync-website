@@ -137,7 +137,7 @@ export default function Home() {
           fontSize: 9, fontWeight: 700, letterSpacing: '0.3em',
           textTransform: 'uppercase', color: 'var(--muted2-accent)',
           whiteSpace: 'nowrap',
-        }}>PalaSync — Est. 2022 — India</div>
+        }}>PalaSync — Est. 2025 — India</div>
 
         {/* Year marker — desktop only */}
         <div aria-hidden className="hero-label-right" style={{
@@ -168,7 +168,7 @@ export default function Home() {
                 width: 6, height: 6, borderRadius: '50%',
                 background: '#22C55E', display: 'inline-block', flexShrink: 0,
               }} />
-              Accepting new projects — June 2026
+              Accepting new projects — August 2026
             </div>
           </motion.div>
 
@@ -234,8 +234,8 @@ export default function Home() {
               fontSize: 'clamp(0.9rem, 2.5vw, 1rem)', lineHeight: 1.8,
               margin: 0,
             }}>
-              Premium custom websites, E-commerce and SaaS platforms, and brand identities for
-              your businesses that refuse to look ordinary.
+              From getting your business online to building custom software that automates your operations,
+              we create high-performance digital experiences that help businesses grow.
             </p>
             <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
               <Link to="/contact" className="btn btn-acid" style={{ fontSize: 14 }}>

@@ -111,7 +111,7 @@ export default function Contact() {
                   <div>
                     <h4 style={{ fontSize: '0.95rem', fontWeight: 700, color: 'var(--text)' }}>Email Directly</h4>
                     <a href="mailto:hello@palasync.com" style={{ fontSize: '0.85rem', color: 'var(--violet)', fontWeight: 600, display: 'inline-block', marginTop: 2 }}>
-                      hello@palasync.com
+                      palasync2@gmail.com
                     </a>
                   </div>
                 </div>

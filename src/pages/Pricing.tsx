@@ -6,7 +6,7 @@ import { Helmet } from 'react-helmet-async'
 const PLANS = [
   {
     name: 'Starter',
-    price: '₹9,999',
+    price: '₹xx,xxx',
     desc: 'Perfect for local businesses, portfolios, and landing pages needing a high-end online presence.',
     features: [
       'Single-page layout / Landing Page',
@@ -28,7 +28,7 @@ const PLANS = [
   },
   {
     name: 'Growth',
-    price: '₹24,999',
+    price: '₹xx,xxx',
     desc: 'Our most popular plan. Ideal for growing brands and startups needing a blog or multi-page product showcase.',
     features: [
       'Up to 5 custom layout pages',
@@ -49,7 +49,7 @@ const PLANS = [
   },
   {
     name: 'Premium',
-    price: '₹49,999+',
+    price: '₹xx,xxx',
     desc: 'Designed for corporate brands, e-commerce, or SaaS products requiring custom dashboard logic.',
     features: [
       'Unlimited subpages and CMS layouts',
@@ -164,7 +164,7 @@ export default function Pricing() {
                   background: '#E8372A',
                   display: 'inline-block',
                 }} />
-                Only 2 design spots remaining for June client work
+                Only 2 design spots remaining for this month client work
               </div>
             </div>
 
