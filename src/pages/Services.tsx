@@ -42,7 +42,7 @@ const SERVICES_DATA = {
     subtitle: 'A complete digital presence that showcases your brand, services and credibility.',
     price: '₹xx,xxx',
     timeline: '2-3 Weeks',
-    icon: '⚡',
+    icon: '◈',
     accent: '#8B65FF',
     glow: 'rgba(139, 101, 255, 0.15)',
     included: [
@@ -101,11 +101,11 @@ const SERVICES_DATA = {
       { q: 'Do you offer updates?', a: 'We provide 30 days of free bug-fix warranty and offer ongoing retainer options for active feature development.' }
     ]
   },
-  'branding': {
-    title: 'Branding & Identity',
-    subtitle: 'Cohesive visuals and guidelines to make your brand recognizable globally.',
-    price: '₹9,999',
-    timeline: '1 Week',
+  'custom-web-app': {
+    title: 'Custom Web App',
+    subtitle: 'Custom software solutions to automate your business processes and scale operations.',
+    price: '₹xx,xxx',
+    timeline: '6-8 Weeks',
     icon: '❋',
     accent: '#E8372A',
     glow: 'rgba(232, 55, 42, 0.15)',
