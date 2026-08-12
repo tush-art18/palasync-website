@@ -8,7 +8,7 @@ const SERVICES_DATA = {
   'starter-website': {
     title: 'Starter Website',
     subtitle: 'A simple, professional website to establish your online presence.',
-    price: '₹XX,XXX',
+    price: '₹xx,xxx',
     timeline: '1-2 Weeks',
     icon: '✦',
     accent: '#6B3FFF',
@@ -40,7 +40,7 @@ const SERVICES_DATA = {
   'business-website': {
     title: 'Business Website',
     subtitle: 'A complete digital presence that showcases your brand, services and credibility.',
-    price: '₹XX,XXX',
+    price: '₹xx,xxx',
     timeline: '2-3 Weeks',
     icon: '⚡',
     accent: '#8B65FF',
@@ -69,10 +69,10 @@ const SERVICES_DATA = {
       { q: 'Is hosting included?', a: 'We set up your hosting on Vercel or Netlify for free. You only pay for your custom domain name.' }
     ]
   },
-  'saas-products': {
-    title: 'SaaS Products',
-    subtitle: 'Full-stack application development. From database architecture to custom client portals.',
-    price: '₹49,999+',
+  'growth-website': {
+    title: 'Growth Website',
+    subtitle: 'A website designed around your customer journey to convert visitors into leads and customers.',
+    price: '₹xx,xxx',
     timeline: '4-6 Weeks',
     icon: '◆',
     accent: '#22C55E',
