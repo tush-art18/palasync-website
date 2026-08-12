@@ -37,10 +37,10 @@ const SERVICES_DATA = {
       { q: 'What if I need updates later?', a: 'We provide 14 days of post-handoff support for adjustments. Extended maintenance agreements are also available.' }
     ]
   },
-  'web-development': {
-    title: 'Web Development',
-    subtitle: 'Clean, type-safe code using modern frameworks. Fast, robust, and search-optimized.',
-    price: '₹9,999',
+  'business-website': {
+    title: 'Business Website',
+    subtitle: 'A complete digital presence that showcases your brand, services and credibility.',
+    price: '₹XX,XXX',
     timeline: '2-3 Weeks',
     icon: '⚡',
     accent: '#8B65FF',
